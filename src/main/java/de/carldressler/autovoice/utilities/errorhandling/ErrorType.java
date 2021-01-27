@@ -14,5 +14,6 @@ public enum ErrorType {
     CHANNEL_ADMIN_REQUIRED,
 
     // Other
-    CLOSED_DMS
+    CLOSED_DMS,
+    UNKNOWN
 }

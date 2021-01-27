@@ -3,6 +3,7 @@ package de.carldressler.autovoice.listeners;
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.autochannel.GetAutoChannelCommand;
+import de.carldressler.autovoice.commands.autochannel.SetupCommand;
 import de.carldressler.autovoice.commands.misc.AboutCommand;
 import de.carldressler.autovoice.commands.misc.InviteCommand;
 import de.carldressler.autovoice.utilities.Constants;
@@ -23,8 +24,10 @@ public class CommandListener extends ListenerAdapter {
     static {
         commandMap.put("invite", new InviteCommand());
         commandMap.put("about", new AboutCommand());
+        commandMap.put("setup", new SetupCommand());
         commandMap.put("gac", new GetAutoChannelCommand());
-        aliasMap.put("carl", "about");
+
+        aliasMap.put("create", "setup");
     }
 
     @Override

@@ -18,6 +18,7 @@ public class ErrorEmbeds {
             case NO_AUTO_CHANNEL -> getNoAutoChannel();
             case CHANNEL_ADMIN_REQUIRED -> getChannelAdminRequired();
             case CLOSED_DMS -> getClosedDMs();
+            case UNKNOWN -> getUnknown();
         };
         ctxt.event.getChannel().sendMessage(embed).queue();
     }
@@ -119,6 +120,14 @@ public class ErrorEmbeds {
                         "3) set 'Allow direct messages from server members' to __true__.\n" +
                         "\n" +
                         "For more information, please refer to `" + Constants.PREFIX + "help`.")
+                .build();
+    }
+
+    static MessageEmbed getUnknown() {
+        return new EmbedBuilder()
+                .setColor(Constants.ERROR)
+                .setTitle(CustomEmotes.ERROR + "  Unknown error")
+                .setDescription("An unknown error has occurred. Try again or contact AutoVoice Support on the Support Discord (`" + Constants.PREFIX + "support`)")
                 .build();
     }
 }

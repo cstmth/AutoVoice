@@ -61,7 +61,8 @@ public abstract class Command {
         else if (hasFlag(CommandFlag.AUTO_CHANNEL_REQUIRED) && ACManager.getAutoChannels(ctxt.guild) == null)
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.NO_AUTO_CHANNEL);
 
-        else if (hasFlag(CommandFlag.CHANNEL_ADMIN_REQUIRED) && ACManager.isChannelAdmin(ctxt.voiceChannel, ctxt.member))
+        // TODO => Implement isChannelAdmin method
+        else if (hasFlag(CommandFlag.CHANNEL_ADMIN_REQUIRED))
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.CHANNEL_ADMIN_REQUIRED);
 
         else
