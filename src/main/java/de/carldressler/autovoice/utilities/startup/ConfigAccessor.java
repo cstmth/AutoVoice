@@ -1,7 +1,8 @@
-package de.carldressler.autovoice.utilities;
+package de.carldressler.autovoice.utilities.startup;
 
 import de.carldressler.autovoice.Bot;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +11,7 @@ import java.util.Properties;
 public class ConfigAccessor {
     private final Properties jdaProperties = new Properties();
     private final Properties hikariProperties = new Properties();
-    private final Logger logger = Logging.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public ConfigAccessor() {
         String jdaFilename;

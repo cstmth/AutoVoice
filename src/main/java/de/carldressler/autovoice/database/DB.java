@@ -3,8 +3,8 @@ package de.carldressler.autovoice.database;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import de.carldressler.autovoice.Bot;
-import de.carldressler.autovoice.utilities.Logging;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class DB {
     static DataSource dataSource;
-    static Logger logger = Logging.getLogger("DB");
+    static Logger logger = LoggerFactory.getLogger("DB");
 
     static {
         Properties properties = Bot.configAccessor.getHikariProperties();

@@ -1,6 +1,6 @@
 package de.carldressler.autovoice.commands;
 
-import de.carldressler.autovoice.database.AutoChannel;
+import de.carldressler.autovoice.database.entities.AutoChannel;
 import de.carldressler.autovoice.managers.AutoChannelManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -45,7 +45,7 @@ public class CommandContext {
 
     public void setAutoChannelProperties() {
         // Step 1 - Setting autoChannelSet
-        autoChannelSet = AutoChannelManager.getAutoChannels(guild);
+        autoChannelSet = AutoChannelManager.getAutoChannelSet(guild);
 
         // Step 2 - Setting autoChannel (dependent on callee current voice category)
         if (voiceChannelCategory != null) {

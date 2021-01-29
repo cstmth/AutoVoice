@@ -5,8 +5,8 @@ import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
 import de.carldressler.autovoice.managers.AutoChannelManager;
 import de.carldressler.autovoice.utilities.Constants;
-import de.carldressler.autovoice.utilities.CustomEmoji;
-import de.carldressler.autovoice.utilities.cooldown.CooldownManager;
+import de.carldressler.autovoice.utilities.CustomEmotes;
+import de.carldressler.autovoice.utilities.CooldownManager;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -51,7 +51,7 @@ public class SetupCommand extends Command {
     private MessageEmbed getSuccess() {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT)
-                .setTitle(CustomEmoji.SUCCESS + "  Auto channel created!")
+                .setTitle(CustomEmotes.SUCCESS + "  Auto channel created!")
                 .setDescription("The Auto Channel was created successfully! It is available without further configuration and may be renamed as desired.\n" +
                         "\n" +
                         "Refer to the `" + Constants.PREFIX + "help` command for further ideas on how to make the most out of your auto channel.")

@@ -1,12 +1,12 @@
 package de.carldressler.autovoice.managers;
 
-import de.carldressler.autovoice.database.AutoChannel;
+import de.carldressler.autovoice.database.entities.AutoChannel;
 import de.carldressler.autovoice.database.DB;
-import de.carldressler.autovoice.utilities.Logging;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AutoChannelManager {
-    static final Logger logger = Logging.getLogger("ACManager");
+    static final Logger logger = LoggerFactory.getLogger("ACManager");
 
     public static boolean createAutoChannel(String channelId, String guildId) {
         try {
@@ -34,14 +34,13 @@ public class AutoChannelManager {
         }
     }
 
-    public static Set<AutoChannel> getAutoChannels(Guild guild) {
+    public static Set<AutoChannel> getAutoChannelSet(Guild guild) {
         return getAutoChannelsUsingDatabase(guild);
     }
 
     private static Set<AutoChannel> getAutoChannelsUsingDatabase(Guild guild) {
-        logger.warn("Getting auto channels using DATABASE");
         JDA jda = guild.getJDA();
-        Set<AutoChannel> autoChannels = new HashSet<>();
+        Set<AutoChannel> autoChannelSet = new HashSet<>();
         ResultSet rs;
 
         try {
@@ -64,7 +63,7 @@ public class AutoChannelManager {
                     removeEntryFromDatabase(channelId);
                 } else {
                     AutoChannel autoChannel = new AutoChannel(voiceChannel, isRandomEmoji);
-                    autoChannels.add(autoChannel);
+                    autoChannelSet.add(autoChannel);
                 }
             } while (rs.next());
             DB.closeConnection(rs);
@@ -72,12 +71,10 @@ public class AutoChannelManager {
             logger.error("Could not get auto channels from DB using guild id.", err);
             return null;
         }
-        logger.debug("DONE with fetching from DB!");
-        return autoChannels;
+        return autoChannelSet;
     }
 
     public static void removeEntryFromDatabase(String channelId) {
-        logger.debug("Removing invalid entry from DATABASE");
         try {
             String sql = """
                     DELETE

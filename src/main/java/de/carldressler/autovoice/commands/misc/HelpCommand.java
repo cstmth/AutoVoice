@@ -4,8 +4,6 @@ import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
 
-import java.util.List;
-
 public class HelpCommand extends Command {
     public HelpCommand() {
         super(

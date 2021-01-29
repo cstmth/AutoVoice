@@ -1,10 +1,11 @@
-package de.carldressler.autovoice.database;
+package de.carldressler.autovoice.database.entities;
 
-import de.carldressler.autovoice.utilities.Logging;
+import de.carldressler.autovoice.database.DB;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -15,7 +16,7 @@ public class AutoChannel {
     private final String channelId;
     private final Guild guild;
     private final boolean randomEmoji;
-    private final Logger logger = Logging.getLogger("AutoChannel");
+    private final Logger logger = LoggerFactory.getLogger("AutoChannel");
 
     public AutoChannel(VoiceChannel voiceChannel, boolean randomEmoji) {
         this.voiceChannel = voiceChannel;

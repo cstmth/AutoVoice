@@ -3,7 +3,7 @@ package de.carldressler.autovoice.commands.dev;
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
-import de.carldressler.autovoice.database.AutoChannel;
+import de.carldressler.autovoice.database.entities.AutoChannel;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.requests.RestAction;
 

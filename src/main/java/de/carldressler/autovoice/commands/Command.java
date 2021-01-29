@@ -1,26 +1,26 @@
 package de.carldressler.autovoice.commands;
 
-import de.carldressler.autovoice.database.AutoChannel;
+import de.carldressler.autovoice.database.entities.AutoChannel;
 import de.carldressler.autovoice.managers.AutoChannelManager;
-import de.carldressler.autovoice.utilities.cooldown.CooldownManager;
+import de.carldressler.autovoice.utilities.CooldownManager;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Category;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Command {
-    public String name;
-    public String description;
-    public List<String> aliases;
-    public List<CommandFlag> flagsList  = new ArrayList<>();
-    public String syntax;
-    public String exampleUsage;
-    public boolean requiresAutoChannel;
+    private String name;
+    private String description;
+    private List<String> aliases;
+    private boolean requiresAutoChannel;
+    private String syntax;
+    private String exampleUsage;
+    private List<CommandFlag> flagsList  = new ArrayList<>();
+
+    private Command parentCommand;
+    private Map<String, Command> childCommandMap = new HashMap<>();
 
     public Command(String name, String description, List<String> aliases, boolean requiresAutoChannel, String syntax, String exampleUsage) {
         this.name = name;
@@ -31,16 +31,8 @@ public abstract class Command {
         this.exampleUsage = exampleUsage;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getSyntax() {
-        return syntax;
+    public void addChildCommands(Map<String, Command> childCommandMap) {
+        this.childCommandMap = childCommandMap;
     }
 
     public void addFlags(CommandFlag... flags) {
@@ -53,6 +45,14 @@ public abstract class Command {
 
     public void process(CommandContext ctxt) {
         ctxt.command = this;
+
+        if (childCommandMap != null && !ctxt.args.isEmpty()) {
+            Command childCommand = childCommandMap.get(ctxt.args.get(0));
+            if (childCommand != null) {
+                childCommand.process(ctxt);
+                return;
+            }
+        }
 
         if (hasFlag(CommandFlag.COOLDOWN_APPLIES) && CooldownManager.isOnCooldown(ctxt.user, false)) {
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.ON_COOLDOWN);
@@ -87,20 +87,19 @@ public abstract class Command {
 
         else if (hasFlag(CommandFlag.USER_IN_TEMP_CHANNEL) && !isInAutoCategory(ctxt))
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.NOT_IN_TEMP_CHANNEL);
-
-        // TODO => Implement isChannelAdmin method
+        /* TODO => Implement channel admin logic
         else if (hasFlag(CommandFlag.CHANNEL_ADMIN_REQUIRED))
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.CHANNEL_ADMIN_REQUIRED);
-
+        */
         else
           run(ctxt);
     }
 
     private boolean isInAutoCategory(CommandContext ctxt) {
-        Set<AutoChannel> autoChannels = AutoChannelManager.getAutoChannels(ctxt.guild);
+        Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(ctxt.guild);
         Set<Category> categories = new HashSet<>();
 
-        for (AutoChannel ac : autoChannels) {
+        for (AutoChannel ac : autoChannelSet) {
             Category category = ac.getVoiceChannel().getParent();
             if (category == null)
                 return false;
@@ -114,5 +113,33 @@ public abstract class Command {
     }
 
     public abstract void run(CommandContext ctxt);
+
+    public String getName() {
+        return name;
+    }
+
+    public Command getParentCommand() {
+        return parentCommand;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<String> getAliases() {
+        return aliases;
+    }
+
+    public String getSyntax() {
+        return syntax;
+    }
+
+    public String getExampleUsage() {
+        return exampleUsage;
+    }
+
+    public boolean isRequiresAutoChannel() {
+        return requiresAutoChannel;
+    }
 }
 

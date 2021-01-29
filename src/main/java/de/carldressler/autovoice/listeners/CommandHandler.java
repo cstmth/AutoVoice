@@ -8,6 +8,8 @@ import de.carldressler.autovoice.commands.dev.CleanupCommand;
 import de.carldressler.autovoice.commands.misc.AboutCommand;
 import de.carldressler.autovoice.commands.misc.HelpCommand;
 import de.carldressler.autovoice.commands.misc.InviteCommand;
+import de.carldressler.autovoice.commands.tempchannel.LimitCommand;
+import de.carldressler.autovoice.commands.tempchannel.lock.LockCommand;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
@@ -19,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public class CommandListener extends ListenerAdapter {
+public class CommandHandler extends ListenerAdapter {
     static final Map<String, Command> commandMap = new LinkedMap<>();
     static final Map<String, String> aliasMap = new LinkedMap<>();
 
@@ -29,6 +31,8 @@ public class CommandListener extends ListenerAdapter {
         commandMap.put("emoji", new EmojiCommand());
         commandMap.put("help", new HelpCommand());
         commandMap.put("invite", new InviteCommand());
+        commandMap.put("limit", new LimitCommand());
+        commandMap.put("lock", new LockCommand());
         commandMap.put("setup", new SetupCommand());
     }
 
