@@ -4,7 +4,7 @@ import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
 import de.carldressler.autovoice.utilities.Constants;
-import de.carldressler.autovoice.utilities.CustomEmotes;
+import de.carldressler.autovoice.utilities.CustomEmoji;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -12,7 +12,12 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class InviteCommand extends Command {
     public InviteCommand() {
-        super("invite", "Sends an invitation link for the bot", null, "invite", null);
+        super("invite",
+                "Sends an invitation link for the bot",
+                null,
+                false,
+                "invite",
+                null);
         addFlags(CommandFlag.GUILD_ONLY);
     }
 
@@ -27,7 +32,7 @@ public class InviteCommand extends Command {
     static MessageEmbed getInvite(CommandContext ctxt) {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT)
-                .setTitle(CustomEmotes.INVITE + "  Invite AutoVoice to your server")
+                .setTitle(CustomEmoji.INVITE + "  Invite AutoVoice to your server")
                 .setDescription("Hey " + ctxt.user.getName() + ",\n" +
                         "adding the bot to your own server is super easy. You need to have administrator permissions on the server.\n" +
                         "\n" +
@@ -46,7 +51,7 @@ public class InviteCommand extends Command {
     static MessageEmbed getSuccess() {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT)
-                .setDescription(CustomEmotes.SUCCESS + "  An invitation was dropped into your direct messages.")
+                .setDescription(CustomEmoji.SUCCESS + "  An invitation was dropped into your direct messages.")
                 .build();
     }
 }

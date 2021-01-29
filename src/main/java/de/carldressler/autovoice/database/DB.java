@@ -8,32 +8,32 @@ import org.slf4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.Properties;
 
 public class DB {
     static DataSource dataSource;
     static Logger logger = Logging.getLogger("DB");
 
     static {
-        HikariConfig config = new HikariConfig();
-        String[] authInfo = Bot.configAccessor.getDBAuthInfo();
-        config.setJdbcUrl(authInfo[0]);
-        config.setUsername(authInfo[1]);
-        config.setPassword(authInfo[2]);
+        Properties properties = Bot.configAccessor.getHikariProperties();
+        HikariConfig config = new HikariConfig(properties);
         dataSource = new HikariDataSource(config);
     }
 
     static public void testConnectivity() {
-        executeStatement("SELECT * FROM autovoice_dev.auto_channels LIMIT 10");
+        executeStatement("SELECT * FROM auto_channels LIMIT 10");
     }
 
     static public void executeStatement(String sql) {
+        Statement statement = getStatement();
         try {
-            Statement statement = getStatement();
             statement.execute(sql);
             statement.getConnection().commit();
             closeConnection(statement);
         } catch (SQLException err) {
             logger.error("Could not execute regular statement", err);
+        } finally {
+            closeConnection(statement);
         }
     }
 
@@ -71,7 +71,7 @@ public class DB {
             try {
                 stmt.getConnection().rollback();
             } catch (SQLException rollbackError) {
-                logger.error("Could not rollback failed batch query", rollbackError);
+                logger.error("Could not roll back failed batch query", rollbackError);
             }
             logger.error("Could not execute batch query", err);
         } finally {
@@ -96,14 +96,24 @@ public class DB {
         }
     }
 
+    public static void closeConnection(ResultSet rs) {
+        logger.debug("Closing ResultSet");
+        try {
+            rs.close();
+        } catch (SQLException err) {
+            throw new RuntimeException("Could not close ResultSet", err);
+        }
+    }
+
     /**
      * This method is reserved for result set connections that have been processed.
      */
     static public void closeConnection(Statement statement) {
+        logger.debug("Closing Statement (connection)");
         try {
             closeConnection(statement.getConnection());
         } catch (SQLException err) {
-            logger.warn("Could not get Connection from Statement to close Connection", err);
+            throw new RuntimeException("Could not close ResultSet", err);
         }
     }
 
@@ -111,11 +121,12 @@ public class DB {
         try {
             connection.close();
         } catch (SQLException err) {
-            logger.warn("Could not close Connection", err);
+            throw new RuntimeException("Could not close ResultSet", err);
         }
     }
 
     static Connection getConnection() {
+        logger.debug("Getting connection");
         try {
             Connection connection = dataSource.getConnection();
             connection.setAutoCommit(false);
@@ -124,4 +135,6 @@ public class DB {
             throw new RuntimeException("Could not get valid database connection", err);
         }
     }
+
+
 }

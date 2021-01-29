@@ -2,9 +2,11 @@ package de.carldressler.autovoice.listeners;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
-import de.carldressler.autovoice.commands.autochannel.GetAutoChannelCommand;
+import de.carldressler.autovoice.commands.autochannel.EmojiCommand;
 import de.carldressler.autovoice.commands.autochannel.SetupCommand;
+import de.carldressler.autovoice.commands.dev.CleanupCommand;
 import de.carldressler.autovoice.commands.misc.AboutCommand;
+import de.carldressler.autovoice.commands.misc.HelpCommand;
 import de.carldressler.autovoice.commands.misc.InviteCommand;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
@@ -22,12 +24,12 @@ public class CommandListener extends ListenerAdapter {
     static final Map<String, String> aliasMap = new LinkedMap<>();
 
     static {
-        commandMap.put("invite", new InviteCommand());
         commandMap.put("about", new AboutCommand());
+        commandMap.put("cleanup", new CleanupCommand());
+        commandMap.put("emoji", new EmojiCommand());
+        commandMap.put("help", new HelpCommand());
+        commandMap.put("invite", new InviteCommand());
         commandMap.put("setup", new SetupCommand());
-        commandMap.put("gac", new GetAutoChannelCommand());
-
-        aliasMap.put("create", "setup");
     }
 
     @Override
@@ -41,16 +43,16 @@ public class CommandListener extends ListenerAdapter {
         List<String> args = messageSplitted.subList(1, messageSplitted.size());
         CommandContext ctxt = new CommandContext(event, command, args);
         
-        if (commandMap.containsKey(ctxt.alias) || aliasMap.containsKey(ctxt.alias))
+        if (commandMap.containsKey(ctxt.invocator.toLowerCase()) || aliasMap.containsKey(ctxt.invocator.toLowerCase()))
             callCommand(ctxt);
         else
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.INVALID_COMMAND);
     }
 
     static void callCommand(CommandContext ctxt) {
-        Command command = commandMap.get(ctxt.alias);
+        Command command = commandMap.get(ctxt.invocator.toLowerCase());
         if (command == null)
-            command = commandMap.get(aliasMap.get(ctxt.alias));
+            command = commandMap.get(aliasMap.get(ctxt.invocator.toLowerCase()));
         command.process(ctxt);
     }
 

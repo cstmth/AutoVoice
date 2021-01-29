@@ -1,49 +1,52 @@
 package de.carldressler.autovoice.utilities;
 
 import de.carldressler.autovoice.Bot;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigAccessor {
-    private static final Properties properties = new Properties();
+    private final Properties jdaProperties = new Properties();
+    private final Properties hikariProperties = new Properties();
+    private final Logger logger = Logging.getLogger(this.getClass());
 
     public ConfigAccessor() {
-        String filename = "config.properties";
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
-        try {
-            properties.load(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+        String jdaFilename;
+        InputStream jdaInputStream;
 
-    public String getToken(boolean isProdMode) {
-        if (isProdMode)
-            return properties.getProperty("prodToken");
-        else
-            return properties.getProperty("devToken");
-    }
-
-    public String[] getDBAuthInfo() {
-        String[] info = new String[4];
+        String hikariFilename;
+        InputStream hikariInputStream;
 
         if (Bot.runsInProdMode) {
-            info[0] = get("prodDBjdbcUrl");
-            info[1] = get("prodDBUser");
-            info[2] = get("prodDBPass");
-            info[3] = get("prodDBSchema");
+            logger.info("Loading PRODUCTION properties");
+            jdaFilename = "jda_prod.properties";
+            hikariFilename = "hikari_prod.properties";
         } else {
-            info[0] = get("devDBjdbcUrl");
-            info[1] = get("devDBUser");
-            info[2] = get("devDBPass");
-            info[3] = get("devDBSchema");
+            logger.info("Loading DEVELOPMENT properties");
+            jdaFilename = "jda_dev.properties";
+            hikariFilename = "hikari_dev.properties";
         }
-        return info;
+        jdaInputStream = this.getClass().getClassLoader().getResourceAsStream(jdaFilename);
+        hikariInputStream = this.getClass().getClassLoader().getResourceAsStream(hikariFilename);
+        try {
+            jdaProperties.load(jdaInputStream);
+            hikariProperties.load(hikariInputStream);
+        } catch (IOException err) {
+            throw new RuntimeException("Cannot load Properties properties with InputStream");
+        }
     }
 
-    public String get(String property) {
-        return properties.getProperty(property);
+    public String getToken() {
+        return getJDAProperties().getProperty("token");
+    }
+
+    public Properties getJDAProperties() {
+        return jdaProperties;
+    }
+
+    public Properties getHikariProperties() {
+        return hikariProperties;
     }
 }
