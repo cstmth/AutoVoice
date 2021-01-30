@@ -33,9 +33,8 @@ public class LockEventListener extends ListenerAdapter {
 
     private void proceed(Member member, VoiceChannel voiceChannel) {
         if (isAllowed(member, voiceChannel)) {
-            System.out.println("Channel is not locked or user is allowed");
+
         } else {
-            System.out.println("In queue...");
         }
     }
 }

@@ -55,7 +55,7 @@ public class EmojiCommand extends Command {
 
     private MessageEmbed getSuccess(String argument) {
         return new EmbedBuilder()
-                .setColor(Constants.ACCENT)
+                .setColor(Constants.ACCENT_COLOR)
                 .setTitle(CustomEmotes.SUCCESS + "  Random emoji were turned " + argument)
                 .setDescription("Random emoji have been turned " + argument + " for new channels. This setting applies only to this AutoChannel and the temporary channels it creates, and does not modify channels retroactively.")
                 .build();

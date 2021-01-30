@@ -50,7 +50,7 @@ public class SetupCommand extends Command {
 
     private MessageEmbed getSuccess() {
         return new EmbedBuilder()
-                .setColor(Constants.ACCENT)
+                .setColor(Constants.ACCENT_COLOR)
                 .setTitle(CustomEmotes.SUCCESS + "  Auto channel created!")
                 .setDescription("The Auto Channel was created successfully! It is available without further configuration and may be renamed as desired.\n" +
                         "\n" +

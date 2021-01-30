@@ -15,6 +15,5 @@ public class LockAddCommand extends Command {
 
     @Override
     public void run(CommandContext ctxt) {
-        System.out.println("Here we go bitches!");
     }
 }

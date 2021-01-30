@@ -6,9 +6,11 @@ import de.carldressler.autovoice.commands.autochannel.EmojiCommand;
 import de.carldressler.autovoice.commands.autochannel.SetupCommand;
 import de.carldressler.autovoice.commands.dev.CleanupCommand;
 import de.carldressler.autovoice.commands.dev.TempChannelCommand;
-import de.carldressler.autovoice.commands.misc.AboutCommand;
-import de.carldressler.autovoice.commands.misc.HelpCommand;
-import de.carldressler.autovoice.commands.misc.InviteCommand;
+import de.carldressler.autovoice.commands.misc.info.AboutCommand;
+import de.carldressler.autovoice.commands.misc.help.HelpCommand;
+import de.carldressler.autovoice.commands.misc.info.DmCommand;
+import de.carldressler.autovoice.commands.misc.info.InviteCommand;
+import de.carldressler.autovoice.commands.misc.info.SupportCommand;
 import de.carldressler.autovoice.commands.tempchannel.LimitCommand;
 import de.carldressler.autovoice.commands.tempchannel.lock.LockCommand;
 import de.carldressler.autovoice.utilities.Constants;
@@ -29,6 +31,7 @@ public class CommandHandler extends ListenerAdapter {
     static {
         commandMap.put("about", new AboutCommand());
         commandMap.put("cleanup", new CleanupCommand());
+        commandMap.put("dm", new DmCommand());
         commandMap.put("emoji", new EmojiCommand());
         commandMap.put("tempChannel", new TempChannelCommand());
         commandMap.put("help", new HelpCommand());
@@ -36,12 +39,17 @@ public class CommandHandler extends ListenerAdapter {
         commandMap.put("limit", new LimitCommand());
         commandMap.put("lock", new LockCommand());
         commandMap.put("setup", new SetupCommand());
+        commandMap.put("support", new SupportCommand());
 
         aliasMap.put("gtc", "tempChannel");
+        aliasMap.put("unlock", "lock");
+        aliasMap.put("superlock", "lock");
+        aliasMap.put("create", "setup");
     }
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+        System.out.println("New message!");
         if (event.getAuthor().isBot() || !event.getMessage().getContentRaw().startsWith(Constants.PREFIX))
             return;
 

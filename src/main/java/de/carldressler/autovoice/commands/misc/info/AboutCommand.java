@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.commands.misc;
+package de.carldressler.autovoice.commands.misc.info;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
@@ -22,15 +22,15 @@ public class AboutCommand extends Command {
     @Override
     public void run(CommandContext ctxt) {
         ctxt.user.openPrivateChannel()
-                .flatMap(c -> c.sendMessage(getAbout(ctxt)))
+                .flatMap(c -> c.sendMessage(getAbout()))
                 .queue(suc -> ctxt.channel.sendMessage(getSuccess()).queue(),
                         err -> ErrorEmbeds.sendEmbed(ctxt, ErrorType.CLOSED_DMS));
     }
 
-    static MessageEmbed getAbout(CommandContext ctxt) {
+    static MessageEmbed getAbout() {
         return new EmbedBuilder()
-                .setColor(Constants.ACCENT)
-                .setTitle(CustomEmotes.INVITE + "  Invite AutoVoice to your server")
+                .setColor(Constants.ACCENT_COLOR)
+                .setTitle(CustomEmotes.INFO + "  Welcome to AutoVoice!")
                 .setDescription("""
                         > The AutoVoice project has been in existence since January 20, 2021. To be honest I am writing this on January 21, 2021 and there is not much to tell yet.
                         > \u200B
@@ -46,7 +46,7 @@ public class AboutCommand extends Command {
 
     static MessageEmbed getSuccess() {
         return new EmbedBuilder()
-                .setColor(Constants.ACCENT)
+                .setColor(Constants.ACCENT_COLOR)
                 .setDescription(CustomEmotes.SUCCESS + "  Mission complete: Check your inbox!")
                 .build();
     }

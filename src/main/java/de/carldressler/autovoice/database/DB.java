@@ -31,7 +31,7 @@ public class DB {
             statement.getConnection().commit();
             closeConnection(statement);
         } catch (SQLException err) {
-            logger.error("Could not execute regular statement", err);
+            logger.error("Could not execute Statement", err);
         } finally {
             closeConnection(statement);
         }

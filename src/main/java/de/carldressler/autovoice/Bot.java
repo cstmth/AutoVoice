@@ -5,8 +5,8 @@ import de.carldressler.autovoice.database.DB;
 import de.carldressler.autovoice.listeners.ChannelEventListener;
 import de.carldressler.autovoice.listeners.CommandHandler;
 import de.carldressler.autovoice.listeners.VoiceEventListener;
+import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.startup.ConfigAccessor;
-import de.carldressler.autovoice.utilities.startup.ExecutionManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -27,7 +27,7 @@ public class Bot {
         String token = getToken();
         jda = JDABuilder
             .createDefault(token)
-            .setActivity(Activity.watching("\uD83C\uDF89 v 1.0 \uD83C\uDF8A"))
+            .setActivity(Activity.watching(Constants.PREFIX + "setup \uD83C\uDF89 v 1.1"))
             .addEventListeners(new CommandHandler(),
                 new VoiceEventListener(),
                 new ChannelEventListener(),
@@ -37,8 +37,7 @@ public class Bot {
     }
 
     static void setProdMode(String[] args) {
-        runsInProdMode = new ExecutionManager().isProd(args);
-        System.out.println(runsInProdMode);
+        runsInProdMode = args.length > 1 || args[0].equals("prod");
     }
 
     public static String getToken() {

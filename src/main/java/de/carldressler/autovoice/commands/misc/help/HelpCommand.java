@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.commands.misc;
+package de.carldressler.autovoice.commands.misc.help;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;

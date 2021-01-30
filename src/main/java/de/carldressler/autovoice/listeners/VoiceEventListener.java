@@ -24,36 +24,42 @@ public class VoiceEventListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
         Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
+        TempChannel tempChannel = TempChannelManager.getTempChannel(event.getChannelJoined().getId());
 
-        checkCreateTempChannel(autoChannelSet, event.getChannelJoined(), event.getMember());
+        createTempChannelCheck(autoChannelSet, event.getChannelJoined(), event.getMember());
     }
 
     @Override
     public void onGuildVoiceMove(@NotNull GuildVoiceMoveEvent event) {
         Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
+        TempChannel tempChannel = TempChannelManager.getTempChannel(event.getChannelJoined().getId());
 
-        checkCreateTempChannel(autoChannelSet, event.getChannelJoined(), event.getMember());
-        checkDeleteTempChannel(autoChannelSet, event.getChannelLeft());
+        if (!createTempChannelCheck(autoChannelSet, event.getChannelJoined(), event.getMember()))
+            deleteTempChannelCheck(autoChannelSet, event.getChannelLeft());
     }
 
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
         Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
 
-        checkDeleteTempChannel(autoChannelSet, event.getChannelLeft());
+        deleteTempChannelCheck(autoChannelSet, event.getChannelLeft());
     }
 
-    public void checkCreateTempChannel(Set<AutoChannel> autoChannelSet, VoiceChannel channelJoined, Member member) {
+    // TODO => Rewrite to use temp channel record over AutoChannel set
+    private boolean createTempChannelCheck(Set<AutoChannel> autoChannelSet, VoiceChannel channelJoined, Member member) {
         for (AutoChannel ac : autoChannelSet) {
             String id = ac.getChannelId();
             if (channelJoined.getId().equals(id)) {
                 TempChannelManager.setupChannel(ac, member);
                 CooldownManager.cooldownUser(member.getUser());
+                return true;
             }
         }
+        return false;
     }
 
-    public void checkDeleteTempChannel(Set<AutoChannel> autoChannelSet, VoiceChannel channelLeft) {
+    // TODO => Rewrite to use temp channel record over AutoChannel set (requires AutoChannel reference on TempChannel)
+    private void deleteTempChannelCheck(Set<AutoChannel> autoChannelSet, VoiceChannel channelLeft) {
         Set<String> autoChannelCategoryIds = new HashSet<>();
         Set<String> autoChannelIds = new HashSet<>();
 
@@ -76,6 +82,8 @@ public class VoiceEventListener extends ListenerAdapter {
             channelLeft.getMembers().isEmpty())
         {
             TempChannelManager.teardownChannel(channelLeft);
+            return;
         }
+        return;
     }
 }

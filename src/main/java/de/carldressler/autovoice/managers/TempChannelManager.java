@@ -54,6 +54,10 @@ public class TempChannelManager {
 
     // READ
     public static TempChannel getTempChannel(String channelId) {
+        return getTempChannelUsingDatabase(channelId);
+    }
+
+    public static TempChannel getTempChannelUsingDatabase(String channelId) {
         String sql = """
                 SELECT *
                 FROM temp_channels
@@ -72,13 +76,14 @@ public class TempChannelManager {
 
             String tempChannelId = rs.getString("channel_id");
             String creatorId = rs.getString("creator_id");
-            boolean isLocked = rs.getInt("is_locked") == 1;
+            int lockStateInt = rs.getInt("lock_state");
             VoiceChannel channel = Bot.jda.getVoiceChannelById(tempChannelId);
 
             if (channel == null) {
+                unregisterChannel(channelId);
                 return null;
             }
-            return new TempChannel(channel, creatorId, isLocked);
+            return new TempChannel(channel, creatorId, lockStateInt);
         } catch (SQLException err) {
             err.printStackTrace();
             return null;
@@ -89,17 +94,17 @@ public class TempChannelManager {
 
     public static void teardownChannel(VoiceChannel emptyChannel) {
         emptyChannel.delete().queue();
-        unregisterChannel(emptyChannel);
+        unregisterChannel(emptyChannel.getId());
     }
 
-    public static void unregisterChannel(VoiceChannel invalidChannel) {
+    public static void unregisterChannel(String invalidChannelId) {
         try {
             String sql = """
                 DELETE
                 FROM temp_channels
                 WHERE channel_id = ?""";
             PreparedStatement prepStmt = DB.getPreparedStatement(sql);
-            prepStmt.setString(1, invalidChannel.getId());
+            prepStmt.setString(1, invalidChannelId);
             DB.executePreparedStatement(prepStmt);
         } catch (SQLException err) {
             logger.error("Could not DELETE now invalid temp channel record from database", err);

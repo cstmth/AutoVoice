@@ -21,11 +21,11 @@ public class ConfigAccessor {
         InputStream hikariInputStream;
 
         if (Bot.runsInProdMode) {
-            logger.info("Loading PRODUCTION properties");
+            logger.info("Starting in PRODUCTION mode");
             jdaFilename = "jda_prod.properties";
             hikariFilename = "hikari_prod.properties";
         } else {
-            logger.info("Loading DEVELOPMENT properties");
+            logger.info("Starting in DEVELOPMENT mode");
             jdaFilename = "jda_dev.properties";
             hikariFilename = "hikari_dev.properties";
         }

@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.commands.misc;
+package de.carldressler.autovoice.commands.misc.info;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
@@ -31,7 +31,7 @@ public class InviteCommand extends Command {
 
     static MessageEmbed getInvite(CommandContext ctxt) {
         return new EmbedBuilder()
-                .setColor(Constants.ACCENT)
+                .setColor(Constants.ACCENT_COLOR)
                 .setTitle(CustomEmotes.INVITE + "  Invite AutoVoice to your server")
                 .setDescription("Hey " + ctxt.user.getName() + ",\n" +
                         "adding the bot to your own server is super easy. You need to have administrator permissions on the server.\n" +
@@ -50,7 +50,7 @@ public class InviteCommand extends Command {
 
     static MessageEmbed getSuccess() {
         return new EmbedBuilder()
-                .setColor(Constants.ACCENT)
+                .setColor(Constants.ACCENT_COLOR)
                 .setDescription(CustomEmotes.SUCCESS + "  An invitation was dropped into your direct messages.")
                 .build();
     }

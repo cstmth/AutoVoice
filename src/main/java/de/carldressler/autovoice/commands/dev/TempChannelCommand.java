@@ -43,7 +43,7 @@ public class TempChannelCommand extends Command {
         ctxt.channel.sendMessage(
             "Channel ID: " + tempChannel.getChannel().getId() + "\n" +
                 "Creator ID: " + tempChannel.getCreator().getId() + "\n" +
-                "Channel is locked: " + tempChannel.isLocked())
+                "Channel is locked: " + tempChannel.getLockState())
             .queue();
     }
 }

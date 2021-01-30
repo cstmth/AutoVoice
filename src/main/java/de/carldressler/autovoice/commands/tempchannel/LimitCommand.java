@@ -55,7 +55,7 @@ public class LimitCommand extends Command {
 
     private MessageEmbed getSuccess(int userLimit) {
         return new EmbedBuilder()
-            .setColor(Constants.ACCENT)
+            .setColor(Constants.ACCENT_COLOR)
             .setTitle(CustomEmotes.SUCCESS + "  User limit set to " + userLimit)
             .setDescription("The user limit has been successfully set to " + userLimit + ". Surplus users will not be removed.\n" +
                 "\n" +
@@ -65,7 +65,7 @@ public class LimitCommand extends Command {
 
     private MessageEmbed getInvalidNumber() {
         return new EmbedBuilder()
-            .setColor(Constants.ERROR)
+            .setColor(Constants.ERROR_COLOR)
             .setTitle(CustomEmotes.ERROR + "  Invalid number")
             .setDescription("The specified value is invalid. It must lie between 1 and 99.")
             .build();
