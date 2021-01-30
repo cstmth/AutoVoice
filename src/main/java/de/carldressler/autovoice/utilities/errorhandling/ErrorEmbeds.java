@@ -13,11 +13,17 @@ public class ErrorEmbeds {
             case INVALID_SYNTAX -> getInvalidSyntax(ctxt);
             case DEV_ONLY -> getDevOnly();
             case DISABLED -> getDisabled();
+            case NOT_GUILD_MODERATOR -> getNotGuildModerator();
+            case NOT_GUILD_ADMIN -> getNotGuildAdmin();
             case GUILD_ONLY -> getGuildOnly();
             case DM_ONLY -> getDMOnly();
             case NO_AUTO_CHANNEL -> getNoAutoChannel();
             case CHANNEL_ADMIN_REQUIRED -> getChannelAdminRequired();
             case CLOSED_DMS -> getClosedDMs();
+            case NOT_IN_TEMP_CHANNEL -> getNotInTempChannel();
+            case ON_COOLDOWN -> getOnCooldown();
+            case NOT_IMPLEMENTED -> getNotImplemented();
+            case UNKNOWN -> getUnknown();
         };
         ctxt.event.getChannel().sendMessage(embed).queue();
     }
@@ -26,8 +32,7 @@ public class ErrorEmbeds {
         return new EmbedBuilder()
                 .setColor(Constants.ERROR)
                 .setTitle("Unknown command")
-                .setDescription("This command is not supported by AutoVoice.\n" +
-                        "Check the spelling or have a look at all commands with `" + Constants.PREFIX + "help`.")
+                .setDescription("Oops! This command is not supported. Check the spelling or have a look at all commands with `" + Constants.PREFIX + "help`.")
                 .build();
     }
 
@@ -35,13 +40,13 @@ public class ErrorEmbeds {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setColor(Constants.ERROR)
                 .setTitle(CustomEmotes.ERROR + "  Invalid syntax");
-        if (ctxt.command.exampleUsage != null) {
+        if (ctxt.command.getExampleUsage() != null) {
             return embedBuilder
                     .setDescription("The structure of the command is invalid. Please fix the structure and call the command again.\n" +
                             "\n" +
-                            "Correct syntax: `" + ctxt.command.syntax + "`\n" +
+                            "Correct syntax: `" + ctxt.command.getSyntax() + "`\n" +
                             "\n" +
-                            "Example: `" + ctxt.command.exampleUsage + "`\n" +
+                            "Example: `" + ctxt.command.getExampleUsage() + "`\n" +
                             "\n" +
                             "For more information, please refer to `" + Constants.PREFIX + "help`.")
                     .build();
@@ -49,7 +54,7 @@ public class ErrorEmbeds {
             return embedBuilder
                     .setDescription("The structure of the command is invalid. Please fix the structure and call the command again.\n" +
                             "\n" +
-                            "Correct syntax: `" + ctxt.command.syntax + "`\n" +
+                            "Correct syntax: `" + ctxt.command.getSyntax() + "`\n" +
                             "\n" +
                             "For more information, please refer to `" + Constants.PREFIX + "help`.")
                     .build();
@@ -69,6 +74,22 @@ public class ErrorEmbeds {
                 .setColor(Constants.ERROR)
                 .setTitle(CustomEmotes.ERROR + "  Command is disabled")
                 .setDescription("The command is not available at the moment.")
+                .build();
+    }
+
+    static MessageEmbed getNotGuildAdmin() {
+        return new EmbedBuilder()
+                .setColor(Constants.ERROR)
+                .setTitle(CustomEmotes.ERROR + "  Insufficient permissions")
+                .setDescription("You have to be a server administrator to call this command. Ask an administrator to run this command or get the necessary permission. The required permission is called: `Administrator`")
+                .build();
+    }
+
+    static MessageEmbed getNotGuildModerator() {
+        return new EmbedBuilder()
+                .setColor(Constants.ERROR)
+                .setTitle(CustomEmotes.ERROR + "  Insufficient permissions!")
+                .setDescription("You have to be a server moderator to call this command. Ask a moderator to run this command or get the necessary permission. The required permission is called: `Manage messages`")
                 .build();
     }
 
@@ -121,4 +142,38 @@ public class ErrorEmbeds {
                         "For more information, please refer to `" + Constants.PREFIX + "help`.")
                 .build();
     }
+
+    private static MessageEmbed getNotInTempChannel() {
+        return new EmbedBuilder()
+                .setColor(Constants.ERROR)
+                .setTitle(CustomEmotes.ERROR + "  Not in voice channel")
+                .setDescription("The command can be executed only from a temporary voice channel. Please create a new voice channel by joining an Auto Channel and call the command again.")
+                .build();
+    }
+
+    // TODO Needs refactoring so Embeds can be sent without CommandContext (from listeners)
+    public static MessageEmbed getOnCooldown() {
+        return new EmbedBuilder()
+                .setColor(Constants.ERROR)
+                .setTitle(CustomEmotes.TIME + "  You're on cooldown")
+                .setDescription("You are temporarily blocked from some AutoVoice functions to prevent spam. Try again in a few seconds. :)")
+                .build();
+    }
+
+    static MessageEmbed getNotImplemented() {
+        return new EmbedBuilder()
+                .setColor(Constants.ERROR)
+                .setTitle(CustomEmotes.ERROR + "  Easter egg!")
+                .setDescription("This command is not yet implemented but the name has already been saved. How long it will take until the command is implemented is not disclosed.")
+                .build();
+    }
+
+    static MessageEmbed getUnknown() {
+        return new EmbedBuilder()
+                .setColor(Constants.ERROR)
+                .setTitle(CustomEmotes.ERROR + "  Unknown error")
+                .setDescription("An unknown error has occurred. Try again or reach out on the Support Discord (`" + Constants.PREFIX + "support`) for immediate support. Thank you! :)")
+                .build();
+    }
+
 }

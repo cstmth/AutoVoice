@@ -1,1 +1,4 @@
-config.properties
+/src/main/resources/
+/gradle/
+/.idea/
+/.gradle/

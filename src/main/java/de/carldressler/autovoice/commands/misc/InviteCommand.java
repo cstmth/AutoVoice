@@ -12,7 +12,12 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class InviteCommand extends Command {
     public InviteCommand() {
-        super("invite", "Sends an invitation link for the bot", null, "invite", null);
+        super("invite",
+                "Sends an invitation link for the bot",
+                null,
+                false,
+                "invite",
+                null);
         addFlags(CommandFlag.GUILD_ONLY);
     }
 

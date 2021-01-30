@@ -2,7 +2,6 @@ package de.carldressler.autovoice.commands.misc;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
-import de.carldressler.autovoice.commands.CommandFlag;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.CustomEmotes;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
@@ -12,8 +11,12 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class AboutCommand extends Command {
     public AboutCommand() {
-        super("about", "Sends interesting information about the AutoVoice project", null, "about", null);
-        addFlags(CommandFlag.GUILD_ONLY);
+        super("about",
+                "Sends interesting information about the AutoVoice project",
+                null,
+                false,
+                "about",
+                null);
     }
 
     @Override
