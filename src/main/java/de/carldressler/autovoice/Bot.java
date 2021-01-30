@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import javax.security.auth.login.LoginException;
 
 public class Bot {
-    public static JDA instance;
+    public static JDA jda;
     public static ConfigAccessor configAccessor;
     public static boolean runsInProdMode;
 
@@ -25,7 +25,7 @@ public class Bot {
         DB.testConnectivity();
 
         String token = getToken();
-        instance = JDABuilder
+        jda = JDABuilder
             .createDefault(token)
             .setActivity(Activity.watching("\uD83C\uDF89 v 1.0 \uD83C\uDF8A"))
             .addEventListeners(new CommandHandler(),

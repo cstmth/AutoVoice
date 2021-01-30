@@ -100,7 +100,7 @@ public abstract class Command {
         Set<Category> categories = new HashSet<>();
 
         for (AutoChannel ac : autoChannelSet) {
-            Category category = ac.getVoiceChannel().getParent();
+            Category category = ac.getChannel().getParent();
             if (category == null)
                 return false;
             categories.add(category);

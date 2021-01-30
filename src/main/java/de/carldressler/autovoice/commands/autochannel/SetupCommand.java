@@ -38,7 +38,7 @@ public class SetupCommand extends Command {
         ctxt.guild.createCategory("AutoVoice")
                 .flatMap(cat -> cat.createVoiceChannel(channelName))
                 .queue(vc -> {
-                            if (AutoChannelManager.createAutoChannel(vc.getId(), guildId))
+                            if (AutoChannelManager.setupChannel(vc.getId(), guildId))
                                 ctxt.channel.sendMessage(getSuccess()).queue();
                             else
                                 ErrorEmbeds.sendEmbed(ctxt, ErrorType.UNKNOWN);

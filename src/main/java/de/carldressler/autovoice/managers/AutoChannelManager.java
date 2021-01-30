@@ -17,12 +17,13 @@ import java.util.Set;
 public class AutoChannelManager {
     static final Logger logger = LoggerFactory.getLogger("ACManager");
 
-    public static boolean createAutoChannel(String channelId, String guildId) {
+    public static boolean setupChannel(String channelId, String guildId) {
         try {
             String sql = """
                 INSERT
                 INTO auto_channels
-                VALUES (?, ?, 0)""";
+                VALUES (?, ?, 0)
+                """;
             PreparedStatement prepStmt = DB.getPreparedStatement(sql);
             prepStmt.setString(1, channelId);
             prepStmt.setString(2, guildId);
@@ -47,7 +48,8 @@ public class AutoChannelManager {
             String sql = """
                     SELECT *
                     FROM auto_channels 
-                    WHERE guild_id = ?;""";
+                    WHERE guild_id = ?;
+                    """;
             PreparedStatement prepStmt = DB.getPreparedStatement(sql);
             prepStmt.setString(1, guild.getId());
             rs = DB.queryPreparedStatement(prepStmt);
@@ -79,7 +81,8 @@ public class AutoChannelManager {
             String sql = """
                     DELETE
                     FROM auto_channels
-                    WHERE channel_id = ?""";
+                    WHERE channel_id = ?
+                    """;
             PreparedStatement prepStmt = DB.getPreparedStatement(sql);
             prepStmt.setString(1, channelId);
             DB.executePreparedStatement(prepStmt);

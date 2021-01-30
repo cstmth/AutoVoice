@@ -5,6 +5,7 @@ import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.autochannel.EmojiCommand;
 import de.carldressler.autovoice.commands.autochannel.SetupCommand;
 import de.carldressler.autovoice.commands.dev.CleanupCommand;
+import de.carldressler.autovoice.commands.dev.TempChannelCommand;
 import de.carldressler.autovoice.commands.misc.AboutCommand;
 import de.carldressler.autovoice.commands.misc.HelpCommand;
 import de.carldressler.autovoice.commands.misc.InviteCommand;
@@ -29,11 +30,14 @@ public class CommandHandler extends ListenerAdapter {
         commandMap.put("about", new AboutCommand());
         commandMap.put("cleanup", new CleanupCommand());
         commandMap.put("emoji", new EmojiCommand());
+        commandMap.put("tempChannel", new TempChannelCommand());
         commandMap.put("help", new HelpCommand());
         commandMap.put("invite", new InviteCommand());
         commandMap.put("limit", new LimitCommand());
         commandMap.put("lock", new LockCommand());
         commandMap.put("setup", new SetupCommand());
+
+        aliasMap.put("gtc", "tempChannel");
     }
 
     @Override

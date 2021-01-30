@@ -28,6 +28,7 @@ public class LockCommand extends Command {
 
     @Override
     public void run(CommandContext ctxt) {
+
     }
 
     public void superlockChannel(VoiceChannel channel) {

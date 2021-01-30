@@ -7,12 +7,12 @@ import java.util.Objects;
 import java.util.Random;
 
 public class CustomEmotes {
-    public static final String LOGO = Objects.requireNonNull(Bot.instance.getEmoteById("803594608746561546")).getAsMention();
-    public static final String SUCCESS = Objects.requireNonNull(Bot.instance.getEmoteById("803594608902799360")).getAsMention();
-    public static final String ERROR = Objects.requireNonNull(Bot.instance.getEmoteById("803594609204789298")).getAsMention();
-    public static final String INFO = Objects.requireNonNull(Bot.instance.getEmoteById("803594609237295154")).getAsMention();
-    public static final String INVITE = Objects.requireNonNull(Bot.instance.getEmoteById("803594608449552394")).getAsMention();
-    public static final String TIME = Objects.requireNonNull(Bot.instance.getEmoteById("804707512087216158")).getAsMention();
+    public static final String LOGO = Objects.requireNonNull(Bot.jda.getEmoteById("803594608746561546")).getAsMention();
+    public static final String SUCCESS = Objects.requireNonNull(Bot.jda.getEmoteById("803594608902799360")).getAsMention();
+    public static final String ERROR = Objects.requireNonNull(Bot.jda.getEmoteById("803594609204789298")).getAsMention();
+    public static final String INFO = Objects.requireNonNull(Bot.jda.getEmoteById("803594609237295154")).getAsMention();
+    public static final String INVITE = Objects.requireNonNull(Bot.jda.getEmoteById("803594608449552394")).getAsMention();
+    public static final String TIME = Objects.requireNonNull(Bot.jda.getEmoteById("804707512087216158")).getAsMention();
 
     public static String getRandomEmoji() {
         List<String> emojiList = List.of(

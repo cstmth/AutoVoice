@@ -1,6 +1,6 @@
 package de.carldressler.autovoice.listeners;
 
-import de.carldressler.autovoice.database.entities.AutoChannel;
+import de.carldressler.autovoice.database.entities.*;
 import de.carldressler.autovoice.managers.AutoChannelManager;
 import de.carldressler.autovoice.managers.TempChannelManager;
 import de.carldressler.autovoice.utilities.CooldownManager;
@@ -47,7 +47,7 @@ public class VoiceEventListener extends ListenerAdapter {
         for (AutoChannel ac : autoChannelSet) {
             String id = ac.getChannelId();
             if (channelJoined.getId().equals(id)) {
-                TempChannelManager.createChannelAndMoveUser(ac, member);
+                TempChannelManager.setupChannel(ac, member);
                 CooldownManager.cooldownUser(member.getUser());
             }
         }
@@ -61,7 +61,7 @@ public class VoiceEventListener extends ListenerAdapter {
             return;
         }
         for (AutoChannel ac : autoChannelSet) {
-            Category category = ac.getVoiceChannel().getParent();
+            Category category = ac.getChannel().getParent();
             String id = ac.getChannelId();
 
             if (category == null) {
@@ -75,7 +75,7 @@ public class VoiceEventListener extends ListenerAdapter {
             !autoChannelIds.contains(channelLeft.getId()) &&
             channelLeft.getMembers().isEmpty())
         {
-            TempChannelManager.deleteChannel(channelLeft);
+            TempChannelManager.teardownChannel(channelLeft);
         }
     }
 }

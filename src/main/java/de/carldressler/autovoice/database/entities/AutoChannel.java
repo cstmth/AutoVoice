@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class AutoChannel {
-    private final VoiceChannel voiceChannel;
+    private final VoiceChannel channel;
     private final Category category;
     private final String channelId;
     private final Guild guild;
@@ -19,7 +19,7 @@ public class AutoChannel {
     private final Logger logger = LoggerFactory.getLogger("AutoChannel");
 
     public AutoChannel(VoiceChannel voiceChannel, boolean randomEmoji) {
-        this.voiceChannel = voiceChannel;
+        this.channel = voiceChannel;
         this.category = voiceChannel.getParent();
         this.channelId = voiceChannel.getId();
         this.guild = voiceChannel.getGuild();
@@ -51,12 +51,12 @@ public class AutoChannel {
         }
     }
 
-    public boolean isRandomEmoji() {
+    public boolean usesRandomEmoji() {
         return randomEmoji;
     }
 
-    public VoiceChannel getVoiceChannel() {
-        return voiceChannel;
+    public VoiceChannel getChannel() {
+        return channel;
     }
 
     public Guild getGuild() {

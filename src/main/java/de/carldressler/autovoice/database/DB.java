@@ -98,6 +98,9 @@ public class DB {
 
     public static void closeConnection(ResultSet rs) {
         logger.debug("Closing ResultSet");
+        if (rs == null) {
+            return;
+        }
         try {
             rs.close();
         } catch (SQLException err) {
