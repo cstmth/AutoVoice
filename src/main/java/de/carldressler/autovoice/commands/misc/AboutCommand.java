@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.commands.misc.info;
+package de.carldressler.autovoice.commands.misc;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
@@ -12,10 +12,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public class AboutCommand extends Command {
     public AboutCommand() {
         super("about",
-                "Sends interesting information about the AutoVoice project",
-                null,
-                "about",
-                null);
+            null);
     }
 
     @Override

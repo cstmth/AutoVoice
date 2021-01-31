@@ -5,29 +5,20 @@ import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
 import de.carldressler.autovoice.managers.AutoChannelManager;
 import de.carldressler.autovoice.utilities.Constants;
-import de.carldressler.autovoice.utilities.CustomEmotes;
 import de.carldressler.autovoice.utilities.CooldownManager;
+import de.carldressler.autovoice.utilities.CustomEmotes;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-import java.util.Collections;
-
 public class SetupCommand extends Command {
     public SetupCommand() {
-        super(
-                "setup",
-                "Creates a new auto channel with the provided name, if available",
-                Collections.singletonList("create"),
-                "create <channel name>",
-                "create my first auto channel"
-        );
-        addFlags(
-                CommandFlag.GUILD_ONLY,
-                CommandFlag.COOLDOWN_APPLIES,
-                CommandFlag.GUILD_ADMIN_REQUIRED
-        );
+        super("create <channel name>",
+            "create my first auto channel",
+            CommandFlag.GUILD_ONLY,
+            CommandFlag.COOLDOWN_APPLIES,
+            CommandFlag.GUILD_ADMIN_REQUIRED);
     }
 
     @Override

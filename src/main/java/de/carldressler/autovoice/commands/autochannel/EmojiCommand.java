@@ -4,30 +4,21 @@ import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
 import de.carldressler.autovoice.utilities.Constants;
-import de.carldressler.autovoice.utilities.CustomEmotes;
 import de.carldressler.autovoice.utilities.CooldownManager;
+import de.carldressler.autovoice.utilities.CustomEmotes;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-import java.util.List;
-
 public class EmojiCommand extends Command {
     public EmojiCommand() {
-        super(
-                "emoji",
-                "Allows to set whether random emoji should be used for temporary channel icons over the standard speech bubble emoji",
-                List.of("setemoji"),
-                "emoji on|off",
-                "emoji on"
-        );
-        addFlags(
-                CommandFlag.TEMP_CHANNEL_REQUIRED,
-                CommandFlag.AUTO_CHANNEL_REQUIRED,
-                CommandFlag.COOLDOWN_APPLIES,
-                CommandFlag.GUILD_ADMIN_REQUIRED
-        );
+        super("emoji on|off",
+            "emoji on",
+            CommandFlag.TEMP_CHANNEL_REQUIRED,
+            CommandFlag.AUTO_CHANNEL_REQUIRED,
+            CommandFlag.COOLDOWN_APPLIES,
+            CommandFlag.GUILD_ADMIN_REQUIRED);
     }
 
     @Override

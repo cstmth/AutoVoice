@@ -10,16 +10,11 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class LimitCommand extends Command {
     public LimitCommand() {
-        super("limit",
-            "Sets a user limit for the temporary channel. If no argument is provided the channel is capped at the current user count",
-            null,
-            "limit (<max user amount>)",
-            "limit 42");
-        addFlags(
+        super("limit (<max user amount>)",
+            "limit 42",
             CommandFlag.CHANNEL_ADMIN_REQUIRED,
             CommandFlag.GUILD_ONLY,
-            CommandFlag.TEMP_CHANNEL_REQUIRED
-        );
+            CommandFlag.TEMP_CHANNEL_REQUIRED);
     }
 
     @Override

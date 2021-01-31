@@ -13,17 +13,13 @@ import java.util.Set;
 
 public class CleanupCommand extends Command {
     public CleanupCommand() {
-        super(
-                "cleanup",
-                "Removes all auto channels and their corresponding categories",
-                null,
-                "cleanup",
-                null
-        );
+        super("cleanup",
+            null,
+            CommandFlag.GUILD_ONLY,
+            CommandFlag.DEV_ONLY,
+            CommandFlag.AUTO_CHANNEL_REQUIRED);
         addFlags(
-                CommandFlag.GUILD_ONLY,
-                CommandFlag.DEV_ONLY,
-                CommandFlag.AUTO_CHANNEL_REQUIRED
+
         );
     }
 

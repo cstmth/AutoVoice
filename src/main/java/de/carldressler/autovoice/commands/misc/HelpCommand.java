@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.commands.misc.help;
+package de.carldressler.autovoice.commands.misc;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
@@ -17,38 +17,81 @@ public class HelpCommand extends Command {
     private final String channelModeratorRestriction = "channel moderator or admin only";
 
     public HelpCommand() {
-        super(
-                "help",
-                "Displays all commands, what they are for, how to use them and possible pitfalls",
-                null,
-                "help (<command name>)",
-                "help setup"
-        );
+        super("help (<command name>)",
+            "help setup");
     }
 
     @Override
     public void run(CommandContext ctxt) {
-        if (ctxt.args.isEmpty()) {
-            System.out.println("Regular help page");
-            return;
-        }
-
         String username = ctxt.member.getEffectiveName();
         String searchString = String.join(" ", ctxt.args);
         MessageEmbed embed = switch (searchString) {
             case "about" -> aboutEmbed();
-            case "setup", "create" -> setupEmbed();
             case "emoji" -> emojiEmbed();
             case "help" -> helpEmbed();
             case "invite" -> inviteEmbed();
+            case "limit" -> limitEmbed();
+            case "setup", "create" -> setupEmbed();
 
             case "getting started" -> gettingStartedEmbed(username);
             case "dms", "direct messages" -> dmsEmbed(username);
             case "autochannel", "autochannels" -> autoChannelEmbed(username);
+            case "" -> defaultEmbed();
             default -> noHelpPageEmbed(username);
         };
 
         ctxt.textChannel.sendMessage(embed).queue();
+    }
+
+    // Default help page
+    private MessageEmbed defaultEmbed() {
+        return new EmbedBuilder()
+            .setColor(Constants.ACCENT_COLOR)
+            .setTitle(CustomEmotes.INFO + "  All AutoVoice commands and what they do + help pages")
+            .setDescription("""
+                This is a complete list of all available AutoVoice commands, their function and the permissions needed to invoke them.
+
+                The presentation of the permissions must be done in a small space, so abbreviations have been used.
+                `DM`  \u2192  direct messages must be open
+                `SA`  \u2192  Server Administrator required
+                `SM`  \u2192  Server Moderator required
+                `CA`  \u2192  Channel Administrator required
+                `CM`  \u2192  Channel Moderator required""")
+            .addField("command", """
+                `about`
+                `emoji`
+                `help`
+                `invite`
+                `limit`
+                `setup`
+                
+                other helpful resources
+                `getting started`
+                `dms`
+                `autochannel`
+                """, true)
+            .addField("summary", """
+                meta information _about_ the bot
+                changes the default temporary channel emoji
+                this is literally inception
+                sends you a bot invite for your own server
+                limits max user amount in temporary channel
+                creates new Auto Channel
+                
+                
+                ideas and tips for new AutoVoice admins
+                information on how to allow dm messages and why
+                what Auto Channels are and why they are great
+                """, true)
+            .addField("permissions", """
+                DM
+                SA
+                none
+                DM
+                CM/CA
+                SA
+                """, true)
+            .build();
     }
 
     // Help pages linked to commands
@@ -94,7 +137,7 @@ public class HelpCommand extends Command {
     private MessageEmbed helpEmbed() {
         return new EmbedBuilder()
             .setColor(Constants.ACCENT_COLOR)
-            .setTitle(CustomEmotes.INFO + "  Something feels off...`")
+            .setTitle(CustomEmotes.INFO + "  Something feels off...")
             .setDescription("The `" + Constants.PREFIX + "help` command tells you more about a particular command or calls other help pages. Just add the command you want to learn more about as the first argument. Something like `" + Constants.PREFIX +"help setup`.\n" +
                 "\n" +
                 "I am impressed that you came up with the idea of calling the help page of the help!")
@@ -107,7 +150,7 @@ public class HelpCommand extends Command {
     private MessageEmbed inviteEmbed() {
         return new EmbedBuilder()
             .setColor(Constants.ACCENT_COLOR)
-            .setTitle(CustomEmotes.INFO + "  Invite AutoVoice to your own server using `" + Constants.PREFIX + "invite`.")
+            .setTitle(CustomEmotes.INFO + "  Invite AutoVoice to your own server with `" + Constants.PREFIX + "invite`")
             .setDescription("Get an invitation URL to invite the bot to your own server. You will receive the link as a direct message to avoid advertising on the server.\n" +
                 "\n" +
                 dmsRequiredPhrase)
@@ -117,15 +160,36 @@ public class HelpCommand extends Command {
             .build();
     }
 
+    private MessageEmbed limitEmbed() {
+        return new EmbedBuilder()
+            .setColor(Constants.ACCENT_COLOR)
+            .setTitle(CustomEmotes.INFO + "  Set a user limit for your channel using `" + Constants.PREFIX + "limit`")
+            .setDescription("With the `" + Constants.PREFIX + "limit` command you can comfortably set the maximum number of participants for the channel.\n" +
+                "\n" +
+                "If you call the command without a number argument, the maximum number of participants is set to the current number of participants. Otherwise it will be set to the specified number.\n" +
+                "\n" +
+                "Note: Surplus participants will not be removed automatically.")
+            .addField("Syntax", "`" + Constants.PREFIX + "limit (<max user amount>)`", true)
+            .addField("Aliases", "none", true)
+            .addField("Restrictions", channelModeratorRestriction, true)
+            .build();
+    }
+
     // Other help pages
     private MessageEmbed gettingStartedEmbed(String username) {
         return new EmbedBuilder()
             .setColor(Constants.ACCENT_COLOR)
             .setTitle(CustomEmotes.INFO + "  Welcome aboard!")
-            .setDescription(""/*TODO*/)
-            .addField("Syntax", "`" + Constants.PREFIX + "emoji <on|off>`", true)
-            .addField("Aliases", "none", true)
-            .addField("Restrictions", guildAdminRestriction, true)
+            .setDescription("Hey " + username +",\n" +
+                "welcome to AutoVoice! AutoVoice is still in the early stages of development and I would like to apologize in advance for any possible bugs. :) Here are a few tips to get you started\n" +
+                "\n" +
+                "1) With AutoVoice you keep your server clean. With so called Auto Channels you can create temporary channels which delete themselves if they are empty. Sounds more complicated than it is, just try it out: `" + Constants.PREFIX + "setup`.\n" +
+                "\n" +
+                "2) Look at all available commands with the `" + Constants.PREFIX + "help` command. This is a great way to get familiar with the commands and find out `what works`.\n" +
+                "\n" +
+                "3) Join the AutoVoice community. I am very grateful for any feedback, bug reports and feature requests - and there are some rewards up for grabs! You can get the invitation code with `" + Constants.PREFIX + "support` if you want to help me and get the latest news about AutoVoice. :)\n" +
+                "\n" +
+                "Enough reading! Have fun experimenting with AutoVoice!")
             .build();
     }
 

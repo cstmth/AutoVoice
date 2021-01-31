@@ -1,8 +1,7 @@
-package de.carldressler.autovoice.commands.misc.info;
+package de.carldressler.autovoice.commands.misc;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
-import de.carldressler.autovoice.commands.CommandFlag;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.CustomEmotes;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -11,11 +10,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public class DmCommand extends Command {
     public DmCommand() {
         super("dm",
-                "Informs about how to allow the bot to send direct messages",
-                null,
-                "dm",
-                null);
-        addFlags(CommandFlag.GUILD_ONLY);
+            null);
     }
 
     @Override

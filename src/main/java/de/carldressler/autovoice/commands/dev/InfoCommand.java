@@ -6,16 +6,10 @@ import de.carldressler.autovoice.commands.CommandFlag;
 
 public class InfoCommand extends Command {
     public InfoCommand() {
-        super("info",
-            "Sends all CommandContext properties available",
-            null,
-            "getTempChannel <ID>",
-            "getTempChannel 804840001597997076"
-        );
-        addFlags(
-                CommandFlag.GUILD_ONLY,
-                CommandFlag.DEV_ONLY
-        );
+        super("getTempChannel <ID>",
+            "getTempChannel 804840001597997076",
+            CommandFlag.GUILD_ONLY,
+            CommandFlag.DEV_ONLY);
     }
 
     @Override

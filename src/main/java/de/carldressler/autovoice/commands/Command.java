@@ -5,27 +5,19 @@ import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.Permission;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Command {
-    private String name;
-    private String description;
-    private List<String> aliases;
     private String syntax;
     private String exampleUsage;
     private List<CommandFlag> flagsList  = new ArrayList<>();
     private Command parentCommand;
     private Map<String, Command> childCommandMap = new HashMap<>();
 
-    public Command(String name, String description, List<String> aliases, String syntax, String exampleUsage) {
-        this.name = name;
-        this.description = description;
-        this.aliases = aliases;
+    public Command(String syntax, String exampleUsage, CommandFlag... flags) {
         this.syntax = syntax;
         this.exampleUsage = exampleUsage;
+        flagsList.addAll(Arrays.asList(flags));
     }
 
     public void addChildCommands(Map<String, Command> childCommandMap) {
@@ -90,18 +82,6 @@ public abstract class Command {
     }
 
     public abstract void run(CommandContext ctxt);
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public List<String> getAliases() {
-        return aliases;
-    }
 
     public String getSyntax() {
         return syntax;
