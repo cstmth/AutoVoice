@@ -46,7 +46,6 @@ public class VoiceEventListener extends ListenerAdapter {
         deleteTempChannelCheck(autoChannelSet, event.getChannelLeft());
     }
 
-    // TODO => Rewrite to use temp channel record over AutoChannel set
     private boolean createTempChannelCheck(Set<AutoChannel> autoChannelSet, VoiceChannel channelJoined, Member member) {
         for (AutoChannel ac : autoChannelSet) {
             String id = ac.getId();
