@@ -14,7 +14,6 @@ public class AboutCommand extends Command {
         super("about",
                 "Sends interesting information about the AutoVoice project",
                 null,
-                false,
                 "about",
                 null);
     }
@@ -23,7 +22,7 @@ public class AboutCommand extends Command {
     public void run(CommandContext ctxt) {
         ctxt.user.openPrivateChannel()
                 .flatMap(c -> c.sendMessage(getAbout()))
-                .queue(suc -> ctxt.channel.sendMessage(getSuccess()).queue(),
+                .queue(suc -> ctxt.textChannel.sendMessage(getSuccess()).queue(),
                         err -> ErrorEmbeds.sendEmbed(ctxt, ErrorType.CLOSED_DMS));
     }
 

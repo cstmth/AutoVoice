@@ -1,9 +1,9 @@
 package de.carldressler.autovoice.managers;
 
 import de.carldressler.autovoice.Bot;
-import de.carldressler.autovoice.database.DB;
-import de.carldressler.autovoice.database.entities.AutoChannel;
-import de.carldressler.autovoice.database.entities.TempChannel;
+import de.carldressler.autovoice.utilities.database.DB;
+import de.carldressler.autovoice.entities.AutoChannel;
+import de.carldressler.autovoice.entities.temp.TempChannel;
 import de.carldressler.autovoice.utilities.CustomEmotes;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Member;
@@ -26,7 +26,7 @@ public class TempChannelManager {
      */
     public static void setupChannel(AutoChannel autoChannel, Member member) {
         Category category = autoChannel.getChannel().getParent();
-        String emoji = autoChannel.usesRandomEmoji() ? CustomEmotes.getRandomEmoji() : "\uD83D\uDCAC";
+        String emoji = autoChannel.isRandomEmoji() ? CustomEmotes.getRandomEmoji() : "\uD83D\uDCAC";
 
         autoChannel.getGuild().createVoiceChannel(emoji + " " + member.getEffectiveName(), category).queue(vc -> {
                 registerChannel(vc, member);
@@ -53,14 +53,14 @@ public class TempChannelManager {
     }
 
     // READ
-    public static TempChannel getTempChannel(String channelId) {
-        return getTempChannelUsingDatabase(channelId);
+    public static TempChannel getTempChannel(VoiceChannel voiceChannel) {
+        return getTempChannelUsingDatabase(voiceChannel.getId());
     }
 
     public static TempChannel getTempChannelUsingDatabase(String channelId) {
         String sql = """
                 SELECT *
-                FROM temp_channels
+                FROM temp_channels tc
                 WHERE channel_id = ?
                 """;
         PreparedStatement prepStmt = DB.getPreparedStatement(sql);

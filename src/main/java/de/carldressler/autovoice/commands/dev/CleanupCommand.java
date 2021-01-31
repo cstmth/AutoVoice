@@ -3,11 +3,13 @@ package de.carldressler.autovoice.commands.dev;
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
-import de.carldressler.autovoice.database.entities.AutoChannel;
+import de.carldressler.autovoice.entities.AutoChannel;
+import de.carldressler.autovoice.managers.AutoChannelManager;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.requests.RestAction;
 
 import java.util.List;
+import java.util.Set;
 
 public class CleanupCommand extends Command {
     public CleanupCommand() {
@@ -15,7 +17,6 @@ public class CleanupCommand extends Command {
                 "cleanup",
                 "Removes all auto channels and their corresponding categories",
                 null,
-                false,
                 "cleanup",
                 null
         );
@@ -28,7 +29,9 @@ public class CleanupCommand extends Command {
 
     @Override
     public void run(CommandContext ctxt) {
-        for (AutoChannel ac : ctxt.autoChannelSet) {
+        Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(ctxt.guild);
+
+        for (AutoChannel ac : autoChannelSet) {
             List<GuildChannel> channelList = ac.getCategory().getChannels();
             RestAction<Void> restAction = ac.getCategory().delete();
             for (GuildChannel channel : channelList) {

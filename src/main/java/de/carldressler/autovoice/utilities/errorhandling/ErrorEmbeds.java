@@ -20,6 +20,7 @@ public class ErrorEmbeds {
             case NO_AUTO_CHANNEL -> getNoAutoChannel();
             case CHANNEL_ADMIN_REQUIRED -> getChannelAdminRequired();
             case CLOSED_DMS -> getClosedDMs();
+            case INVALID_MENTION -> getInvalidMention();
             case NOT_IN_TEMP_CHANNEL -> getNotInTempChannel();
             case ON_COOLDOWN -> getOnCooldown();
             case NOT_IMPLEMENTED -> getNotImplemented();
@@ -141,6 +142,14 @@ public class ErrorEmbeds {
                         "\n" +
                         "For more information, please refer to `" + Constants.PREFIX + "help`.")
                 .build();
+    }
+
+    private static MessageEmbed getInvalidMention() {
+        return new EmbedBuilder()
+            .setColor(Constants.ERROR_COLOR)
+            .setTitle(CustomEmotes.ERROR + "  Invalid mention")
+            .setDescription("The mention (or possibly ID) you provided is invalid. Make sure to only mention people or IDs the bot has access to (e.g. not same guild)")
+            .build();
     }
 
     private static MessageEmbed getNotInTempChannel() {

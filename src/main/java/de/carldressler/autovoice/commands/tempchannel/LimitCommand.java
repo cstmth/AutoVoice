@@ -13,13 +13,12 @@ public class LimitCommand extends Command {
         super("limit",
             "Sets a user limit for the temporary channel. If no argument is provided the channel is capped at the current user count",
             null,
-            false,
             "limit (<max user amount>)",
             "limit 42");
         addFlags(
             CommandFlag.CHANNEL_ADMIN_REQUIRED,
             CommandFlag.GUILD_ONLY,
-            CommandFlag.USER_IN_TEMP_CHANNEL
+            CommandFlag.TEMP_CHANNEL_REQUIRED
         );
     }
 
@@ -42,14 +41,14 @@ public class LimitCommand extends Command {
             if (ctxt.args.get(0).matches("^(0?[2-9]|[1-9][0-9])$")) {
                 userLimit = Integer.parseInt(ctxt.args.get(0));
             } else {
-                ctxt.channel.sendMessage(getInvalidNumber()).queue();
+                ctxt.textChannel.sendMessage(getInvalidNumber()).queue();
             }
 
         }
 
         int finalUserLimit = userLimit; // lambda bruh moment
         ctxt.voiceChannel.getManager().setUserLimit(userLimit)
-            .flatMap(suc -> ctxt.channel.sendMessage(getSuccess(finalUserLimit)))
+            .flatMap(suc -> ctxt.textChannel.sendMessage(getSuccess(finalUserLimit)))
             .queue();
     }
 

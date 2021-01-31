@@ -19,12 +19,11 @@ public class EmojiCommand extends Command {
                 "emoji",
                 "Allows to set whether random emoji should be used for temporary channel icons over the standard speech bubble emoji",
                 List.of("setemoji"),
-                true,
                 "emoji on|off",
                 "emoji on"
         );
         addFlags(
-                CommandFlag.USER_IN_TEMP_CHANNEL,
+                CommandFlag.TEMP_CHANNEL_REQUIRED,
                 CommandFlag.AUTO_CHANNEL_REQUIRED,
                 CommandFlag.COOLDOWN_APPLIES,
                 CommandFlag.GUILD_ADMIN_REQUIRED
@@ -50,7 +49,7 @@ public class EmojiCommand extends Command {
             return;
         }
         CooldownManager.cooldownUser(ctxt.user);
-        ctxt.channel.sendMessage(getSuccess(argument)).queue();
+        ctxt.textChannel.sendMessage(getSuccess(argument)).queue();
     }
 
     private MessageEmbed getSuccess(String argument) {

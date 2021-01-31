@@ -1,5 +1,6 @@
 package de.carldressler.autovoice.utilities.errorhandling;
 
+// TODO => Implement invalid mention (add to ErrorEmbeds and modify LockAdd and LockRemove commands
 public enum ErrorType {
     // Command handling
     INVALID_COMMAND,
@@ -18,6 +19,7 @@ public enum ErrorType {
 
 
     // Other
+    INVALID_MENTION,
     CLOSED_DMS,
     ON_COOLDOWN,
     NOT_IMPLEMENTED,

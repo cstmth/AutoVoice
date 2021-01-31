@@ -20,7 +20,6 @@ public class SetupCommand extends Command {
                 "setup",
                 "Creates a new auto channel with the provided name, if available",
                 Collections.singletonList("create"),
-                false,
                 "create <channel name>",
                 "create my first auto channel"
         );
@@ -39,7 +38,7 @@ public class SetupCommand extends Command {
                 .flatMap(cat -> cat.createVoiceChannel(channelName))
                 .queue(vc -> {
                             if (AutoChannelManager.setupChannel(vc.getId(), guildId))
-                                ctxt.channel.sendMessage(getSuccess()).queue();
+                                ctxt.textChannel.sendMessage(getSuccess()).queue();
                             else
                                 ErrorEmbeds.sendEmbed(ctxt, ErrorType.UNKNOWN);
                         },

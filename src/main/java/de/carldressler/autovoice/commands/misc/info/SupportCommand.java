@@ -15,7 +15,6 @@ public class SupportCommand extends Command {
         super("support",
                 "Sends an invitation link to the AutoVoice Support and Announcements server",
                 null,
-                false,
                 "support",
                 null);
         addFlags(CommandFlag.GUILD_ONLY);
@@ -25,7 +24,7 @@ public class SupportCommand extends Command {
     public void run(CommandContext ctxt) {
         ctxt.user.openPrivateChannel()
                 .flatMap(c -> c.sendMessage(getInvite(ctxt)))
-                .queue(suc -> ctxt.channel.sendMessage(getSuccess()).queue(),
+                .queue(suc -> ctxt.textChannel.sendMessage(getSuccess()).queue(),
                 err -> ErrorEmbeds.sendEmbed(ctxt, ErrorType.CLOSED_DMS));
     }
 

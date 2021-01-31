@@ -13,7 +13,6 @@ public class DmCommand extends Command {
         super("dm",
                 "Informs about how to allow the bot to send direct messages",
                 null,
-                false,
                 "dm",
                 null);
         addFlags(CommandFlag.GUILD_ONLY);
@@ -21,7 +20,7 @@ public class DmCommand extends Command {
 
     @Override
     public void run(CommandContext ctxt) {
-        ctxt.channel.sendMessage(getActivateDms(ctxt)).queue();
+        ctxt.textChannel.sendMessage(getActivateDms(ctxt)).queue();
     }
 
     static MessageEmbed getActivateDms(CommandContext ctxt) {

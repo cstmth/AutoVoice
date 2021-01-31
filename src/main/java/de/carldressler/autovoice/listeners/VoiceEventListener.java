@@ -1,6 +1,7 @@
 package de.carldressler.autovoice.listeners;
 
-import de.carldressler.autovoice.database.entities.*;
+import de.carldressler.autovoice.entities.*;
+import de.carldressler.autovoice.entities.temp.TempChannel;
 import de.carldressler.autovoice.managers.AutoChannelManager;
 import de.carldressler.autovoice.managers.TempChannelManager;
 import de.carldressler.autovoice.utilities.CooldownManager;
@@ -24,7 +25,7 @@ public class VoiceEventListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
         Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
-        TempChannel tempChannel = TempChannelManager.getTempChannel(event.getChannelJoined().getId());
+        TempChannel tempChannel = TempChannelManager.getTempChannel(event.getChannelJoined());
 
         createTempChannelCheck(autoChannelSet, event.getChannelJoined(), event.getMember());
     }
@@ -32,7 +33,7 @@ public class VoiceEventListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceMove(@NotNull GuildVoiceMoveEvent event) {
         Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
-        TempChannel tempChannel = TempChannelManager.getTempChannel(event.getChannelJoined().getId());
+        TempChannel tempChannel = TempChannelManager.getTempChannel(event.getChannelJoined());
 
         if (!createTempChannelCheck(autoChannelSet, event.getChannelJoined(), event.getMember()))
             deleteTempChannelCheck(autoChannelSet, event.getChannelLeft());
@@ -48,7 +49,7 @@ public class VoiceEventListener extends ListenerAdapter {
     // TODO => Rewrite to use temp channel record over AutoChannel set
     private boolean createTempChannelCheck(Set<AutoChannel> autoChannelSet, VoiceChannel channelJoined, Member member) {
         for (AutoChannel ac : autoChannelSet) {
-            String id = ac.getChannelId();
+            String id = ac.getId();
             if (channelJoined.getId().equals(id)) {
                 TempChannelManager.setupChannel(ac, member);
                 CooldownManager.cooldownUser(member.getUser());
@@ -68,7 +69,7 @@ public class VoiceEventListener extends ListenerAdapter {
         }
         for (AutoChannel ac : autoChannelSet) {
             Category category = ac.getChannel().getParent();
-            String id = ac.getChannelId();
+            String id = ac.getId();
 
             if (category == null) {
                 return;
@@ -79,11 +80,8 @@ public class VoiceEventListener extends ListenerAdapter {
 
         if (autoChannelCategoryIds.contains(channelLeft.getParent().getId()) &&
             !autoChannelIds.contains(channelLeft.getId()) &&
-            channelLeft.getMembers().isEmpty())
-        {
+            channelLeft.getMembers().isEmpty()) {
             TempChannelManager.teardownChannel(channelLeft);
-            return;
         }
-        return;
     }
 }

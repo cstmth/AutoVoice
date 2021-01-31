@@ -1,7 +1,6 @@
 package de.carldressler.autovoice;
 
-import de.carldressler.autovoice.commands.tempchannel.lock.LockEventListener;
-import de.carldressler.autovoice.database.DB;
+import de.carldressler.autovoice.utilities.database.DB;
 import de.carldressler.autovoice.listeners.ChannelEventListener;
 import de.carldressler.autovoice.listeners.CommandHandler;
 import de.carldressler.autovoice.listeners.VoiceEventListener;
@@ -30,8 +29,7 @@ public class Bot {
             .setActivity(Activity.watching(Constants.PREFIX + "setup \uD83C\uDF89 v 1.1"))
             .addEventListeners(new CommandHandler(),
                 new VoiceEventListener(),
-                new ChannelEventListener(),
-                new LockEventListener())
+                new ChannelEventListener())
                 .build()
                 .awaitReady();
     }

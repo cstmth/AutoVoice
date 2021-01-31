@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.database;
+package de.carldressler.autovoice.utilities.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

@@ -9,7 +9,7 @@ public enum CommandFlag {
 
     // Requirements
     AUTO_CHANNEL_REQUIRED,
-    USER_IN_TEMP_CHANNEL,
+    TEMP_CHANNEL_REQUIRED,
 
     // Permissions
     CHANNEL_ADMIN_REQUIRED,

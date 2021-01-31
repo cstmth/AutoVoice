@@ -10,7 +10,6 @@ public class HelpCommand extends Command {
                 "help",
                 "Displays all commands, what they are for, how to use them and possible pitfalls",
                 null,
-                false,
                 "help (<command name>)",
                 "help setup"
         );

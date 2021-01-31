@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.database.entities;
+package de.carldressler.autovoice.entities.temp;
 
 public enum LockState {
     UNLOCKED,

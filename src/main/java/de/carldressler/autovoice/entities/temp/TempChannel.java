@@ -1,6 +1,8 @@
-package de.carldressler.autovoice.database.entities;
+package de.carldressler.autovoice.entities.temp;
 
-import de.carldressler.autovoice.database.DB;
+import de.carldressler.autovoice.entities.AutoChannel;
+import de.carldressler.autovoice.utilities.database.DB;
+import de.carldressler.autovoice.managers.AutoChannelManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
@@ -11,52 +13,25 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Set;
 
 public class TempChannel {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final String channelId;
     private final VoiceChannel channel;
     private final Category category;
     private final Guild guild;
     private final Member creator;
+    private final AutoChannel autoChannel;
     private LockState lockState;
-    private AutoChannel autoChannel; // TODO
-    private Set<String> allowedMembers;
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public VoiceChannel getChannel() {
-        return channel;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public Guild getGuild() {
-        return guild;
-    }
-
-    public Member getCreator() {
-        return creator;
-    }
-
-    public LockState getLockState() {
-        return lockState;
-    }
-
-    public Set<String> getAllowedMembers() {
-        return allowedMembers;
-    }
 
     public TempChannel(VoiceChannel voiceChannel, String creatorId, int lockStateInt) {
+        this.channelId = voiceChannel.getId();
         this.channel = voiceChannel;
         this.category = channel.getParent();
         this.guild = channel.getGuild();
         this.creator = guild.getMemberById(creatorId);
+        this.autoChannel = AutoChannelManager.getAutoChannel(voiceChannel);
         this.lockState = switch (lockStateInt) {
             default -> LockState.UNLOCKED; // case 0
             case 1 -> LockState.LOCKED;
@@ -78,7 +53,7 @@ public class TempChannel {
         try {
             String sql = """
                 UPDATE temp_channels
-                SET is_locked = ?
+                SET lock_state = ?
                 WHERE channel_id = ?
                 """;
             PreparedStatement prepStmt = DB.getPreparedStatement(sql);
@@ -93,13 +68,14 @@ public class TempChannel {
         // TODO => Check if this works...
         if (lockState == LockState.SUPERLOCKED) {
             this.getChannel().upsertPermissionOverride(this.getGuild().getPublicRole())
-                .setDeny(Permission.VIEW_CHANNEL)
+                .setDeny(Permission.VIEW_CHANNEL,
+                    Permission.VOICE_CONNECT)
                 .queue();
         }
     }
 
-    public void setLockBypass(boolean mayBypassLock, Member member) {
-        // TODO => How can we INSERT or UPDATE depending on whether a record exists already?
+    public void setLockBypass(boolean mayBypassLock, String memberId, String channelId) {
+        // TODO => Think of better name and implement
     }
 
     public boolean mayJoin(Member member) {
@@ -108,6 +84,34 @@ public class TempChannel {
     }
 
     public void placeIntoQueue(Member member) {
-        // TODO => Place the user into the (or a) queue channel
+        System.out.println("Queue...");
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public VoiceChannel getChannel() {
+        return channel;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public Member getCreator() {
+        return creator;
+    }
+
+    public AutoChannel getAutoChannel() {
+        return autoChannel;
+    }
+
+    public LockState getLockState() {
+        return lockState;
     }
 }
