@@ -44,6 +44,7 @@ public class HelpCommand extends Command {
 
             case "getting started" -> gettingStartedEmbed(username);
             case "dms", "direct messages" -> dmsEmbed(username);
+            case "autochannel", "autochannels" -> autoChannelEmbed(username);
             default -> noHelpPageEmbed(username);
         };
 
@@ -68,7 +69,7 @@ public class HelpCommand extends Command {
         return new EmbedBuilder()
             .setColor(Constants.ACCENT_COLOR)
             .setTitle(CustomEmotes.INFO + "  Create new auto channels using `" + Constants.PREFIX + "setup`")
-            .setDescription("" /*TODO*/)
+            .setDescription("Creates a new category \"AutoVoice\" with a new Auto Channel. Auto Channels are the heart of AutoVoice and allow the creation of temporary channels. You can find more about this topic with `" + Constants.PREFIX +"help autochannel`.")
             .addField("Syntax", "`" + Constants.PREFIX + "setup (<channel name>)`", true)
             .addField("Aliases", "create", true)
             .addField("Restrictions", guildAdminRestriction, true)
@@ -107,10 +108,12 @@ public class HelpCommand extends Command {
         return new EmbedBuilder()
             .setColor(Constants.ACCENT_COLOR)
             .setTitle(CustomEmotes.INFO + "  Invite AutoVoice to your own server using `" + Constants.PREFIX + "invite`.")
-            .setDescription(""/*TODO*/)
-            .addField("Syntax", "`" + Constants.PREFIX + "help (<command or other page>)`", true)
+            .setDescription("Get an invitation URL to invite the bot to your own server. You will receive the link as a direct message to avoid advertising on the server.\n" +
+                "\n" +
+                dmsRequiredPhrase)
+            .addField("Syntax", "`" + Constants.PREFIX + "invite`", true)
             .addField("Aliases", "none", true)
-            .addField("Restrictions", "none", true)
+            .addField("Restrictions", dmsRequiredRestriction, true)
             .build();
     }
 
@@ -140,6 +143,19 @@ public class HelpCommand extends Command {
                 "3) Check _\"Allow direct messages from server members.\"_\n" +
                 "\n" +
                 "That's all - the bot can now send you messages. You are done here!")
+            .build();
+    }
+
+    private MessageEmbed autoChannelEmbed(String username) {
+        return new EmbedBuilder()
+            .setColor(Constants.ACCENT_COLOR)
+            .setTitle(CustomEmotes.INFO + "  ")
+            .setDescription("Hey " + username + ",\n" +
+                "Auto channels are awesome and here's why: auto channels allow you to keep your server free of empty channels. When you join an Auto Channel, a temporary channel is automatically created for you and you are moved into it. Your friends can join and you can spend time together. When you're done and everyone has left the channel, the temporary channel deletes itself - and no clutter is left!\n" +
+                "\n" +
+                "Important difference: Auto Channel is where temporary channels are created and they are never automatically deleted. Only temporary channels are deleted. Also, it is literally impossible to talk in an Auto Channel because you will be automatically moved to a temporary channel.\n" +
+                "\n" +
+                "So, what are you waiting for? Try it: `" + Constants.PREFIX + "setup` and an Auto Channel will be created for you.")
             .build();
     }
 
