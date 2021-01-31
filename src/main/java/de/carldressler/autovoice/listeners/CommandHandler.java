@@ -5,14 +5,13 @@ import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.autochannel.EmojiCommand;
 import de.carldressler.autovoice.commands.autochannel.SetupCommand;
 import de.carldressler.autovoice.commands.dev.CleanupCommand;
-import de.carldressler.autovoice.commands.dev.TempChannelCommand;
-import de.carldressler.autovoice.commands.misc.info.AboutCommand;
-import de.carldressler.autovoice.commands.misc.help.HelpCommand;
-import de.carldressler.autovoice.commands.misc.info.DmCommand;
-import de.carldressler.autovoice.commands.misc.info.InviteCommand;
-import de.carldressler.autovoice.commands.misc.info.SupportCommand;
+import de.carldressler.autovoice.commands.dev.InfoCommand;
+import de.carldressler.autovoice.commands.misc.HelpCommand;
+import de.carldressler.autovoice.commands.misc.AboutCommand;
+import de.carldressler.autovoice.commands.misc.DmCommand;
+import de.carldressler.autovoice.commands.misc.InviteCommand;
+import de.carldressler.autovoice.commands.misc.SupportCommand;
 import de.carldressler.autovoice.commands.tempchannel.LimitCommand;
-import de.carldressler.autovoice.commands.tempchannel.lock.LockCommand;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
@@ -33,11 +32,12 @@ public class CommandHandler extends ListenerAdapter {
         commandMap.put("cleanup", new CleanupCommand());
         commandMap.put("dm", new DmCommand());
         commandMap.put("emoji", new EmojiCommand());
-        commandMap.put("tempChannel", new TempChannelCommand());
+        commandMap.put("tempChannel", new InfoCommand());
         commandMap.put("help", new HelpCommand());
+        commandMap.put("info", new InfoCommand());
         commandMap.put("invite", new InviteCommand());
         commandMap.put("limit", new LimitCommand());
-        commandMap.put("lock", new LockCommand());
+        // commandMap.put("lock", new LockCommand());
         commandMap.put("setup", new SetupCommand());
         commandMap.put("support", new SupportCommand());
 
@@ -49,7 +49,6 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        System.out.println("New message!");
         if (event.getAuthor().isBot() || !event.getMessage().getContentRaw().startsWith(Constants.PREFIX))
             return;
 

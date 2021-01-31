@@ -1,34 +1,23 @@
 package de.carldressler.autovoice.commands;
 
-import de.carldressler.autovoice.database.entities.AutoChannel;
-import de.carldressler.autovoice.managers.AutoChannelManager;
 import de.carldressler.autovoice.utilities.CooldownManager;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Category;
 
 import java.util.*;
 
 public abstract class Command {
-    private String name;
-    private String description;
-    private List<String> aliases;
-    private boolean requiresAutoChannel;
     private String syntax;
     private String exampleUsage;
     private List<CommandFlag> flagsList  = new ArrayList<>();
-
     private Command parentCommand;
     private Map<String, Command> childCommandMap = new HashMap<>();
 
-    public Command(String name, String description, List<String> aliases, boolean requiresAutoChannel, String syntax, String exampleUsage) {
-        this.name = name;
-        this.description = description;
-        this.aliases = aliases;
-        this.requiresAutoChannel = requiresAutoChannel;
+    public Command(String syntax, String exampleUsage, CommandFlag... flags) {
         this.syntax = syntax;
         this.exampleUsage = exampleUsage;
+        flagsList.addAll(Arrays.asList(flags));
     }
 
     public void addChildCommands(Map<String, Command> childCommandMap) {
@@ -54,14 +43,10 @@ public abstract class Command {
             }
         }
 
-        if (hasFlag(CommandFlag.COOLDOWN_APPLIES) && CooldownManager.isOnCooldown(ctxt.user, false)) {
+        if (hasFlag(CommandFlag.COOLDOWN_APPLIES) && CooldownManager.isOnCooldown(ctxt.user, false))
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.ON_COOLDOWN);
-            return;
-        } else if (hasFlag(CommandFlag.AUTO_CHANNEL_REQUIRED)) {
-            ctxt.setAutoChannelProperties();
-        }
 
-        if (hasFlag(CommandFlag.DEV_ONLY) && !ctxt.user.getId().equals("730190870011183271"))
+        else if (hasFlag(CommandFlag.DEV_ONLY) && !ctxt.user.getId().equals("730190870011183271"))
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.DEV_ONLY);
 
         else if (hasFlag(CommandFlag.NOT_IMPLEMENTED))
@@ -79,14 +64,15 @@ public abstract class Command {
         else if (hasFlag(CommandFlag.GUILD_ONLY) && ctxt.guild == null)
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.GUILD_ONLY);
 
-        else if (hasFlag(CommandFlag.DM_ONLY) && ctxt.channel != null)
+        else if (hasFlag(CommandFlag.DM_ONLY) && ctxt.textChannel != null)
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.DM_ONLY);
 
-        if (hasFlag(CommandFlag.AUTO_CHANNEL_REQUIRED) && ctxt.autoChannelSet == null)
+        if (hasFlag(CommandFlag.AUTO_CHANNEL_REQUIRED) && ctxt.autoChannel == null)
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.NO_AUTO_CHANNEL);
 
-        else if (hasFlag(CommandFlag.USER_IN_TEMP_CHANNEL) && !isInAutoCategory(ctxt))
+        else if (hasFlag(CommandFlag.TEMP_CHANNEL_REQUIRED) && ctxt.tempChannel == null)
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.NOT_IN_TEMP_CHANNEL);
+
         /* TODO => Implement channel admin logic
         else if (hasFlag(CommandFlag.CHANNEL_ADMIN_REQUIRED))
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.CHANNEL_ADMIN_REQUIRED);
@@ -95,40 +81,7 @@ public abstract class Command {
           run(ctxt);
     }
 
-    private boolean isInAutoCategory(CommandContext ctxt) {
-        Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(ctxt.guild);
-        Set<Category> categories = new HashSet<>();
-
-        for (AutoChannel ac : autoChannelSet) {
-            Category category = ac.getChannel().getParent();
-            if (category == null)
-                return false;
-            categories.add(category);
-        }
-        if (ctxt.voiceChannelCategory == null) {
-            return false;
-        } else {
-            return categories.contains(ctxt.voiceChannelCategory);
-        }
-    }
-
     public abstract void run(CommandContext ctxt);
-
-    public String getName() {
-        return name;
-    }
-
-    public Command getParentCommand() {
-        return parentCommand;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public List<String> getAliases() {
-        return aliases;
-    }
 
     public String getSyntax() {
         return syntax;
@@ -138,8 +91,16 @@ public abstract class Command {
         return exampleUsage;
     }
 
-    public boolean isRequiresAutoChannel() {
-        return requiresAutoChannel;
+    public List<CommandFlag> getFlagsList() {
+        return flagsList;
+    }
+
+    public Command getParentCommand() {
+        return parentCommand;
+    }
+
+    public Map<String, Command> getChildCommandMap() {
+        return childCommandMap;
     }
 }
 

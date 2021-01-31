@@ -1,8 +1,7 @@
-package de.carldressler.autovoice.commands.misc.info;
+package de.carldressler.autovoice.commands.misc;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
-import de.carldressler.autovoice.commands.CommandFlag;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.CustomEmotes;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
@@ -13,19 +12,14 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public class SupportCommand extends Command {
     public SupportCommand() {
         super("support",
-                "Sends an invitation link to the AutoVoice Support and Announcements server",
-                null,
-                false,
-                "support",
-                null);
-        addFlags(CommandFlag.GUILD_ONLY);
+            null);
     }
 
     @Override
     public void run(CommandContext ctxt) {
         ctxt.user.openPrivateChannel()
                 .flatMap(c -> c.sendMessage(getInvite(ctxt)))
-                .queue(suc -> ctxt.channel.sendMessage(getSuccess()).queue(),
+                .queue(suc -> ctxt.textChannel.sendMessage(getSuccess()).queue(),
                 err -> ErrorEmbeds.sendEmbed(ctxt, ErrorType.CLOSED_DMS));
     }
 

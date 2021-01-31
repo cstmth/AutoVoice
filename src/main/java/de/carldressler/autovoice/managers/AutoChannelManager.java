@@ -1,7 +1,7 @@
 package de.carldressler.autovoice.managers;
 
-import de.carldressler.autovoice.database.entities.AutoChannel;
-import de.carldressler.autovoice.database.DB;
+import de.carldressler.autovoice.utilities.database.DB;
+import de.carldressler.autovoice.entities.AutoChannel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -33,6 +33,19 @@ public class AutoChannelManager {
             logger.error("Could not create new auto channel record in database", err);
             return false;
         }
+    }
+
+    public static AutoChannel getAutoChannel(VoiceChannel voiceChannel) {
+        Set<AutoChannel> autoChannelSet = getAutoChannelSet(voiceChannel.getGuild());
+
+        if (voiceChannel.getParent() == null)
+            return null;
+
+        for (AutoChannel ac : autoChannelSet) {
+            if (ac.getCategory().getId().equals(voiceChannel.getParent().getId()))
+                return ac;
+        }
+        return null;
     }
 
     public static Set<AutoChannel> getAutoChannelSet(Guild guild) {

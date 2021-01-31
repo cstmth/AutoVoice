@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.commands.misc.info;
+package de.carldressler.autovoice.commands.misc;
 
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
@@ -12,18 +12,14 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public class AboutCommand extends Command {
     public AboutCommand() {
         super("about",
-                "Sends interesting information about the AutoVoice project",
-                null,
-                false,
-                "about",
-                null);
+            null);
     }
 
     @Override
     public void run(CommandContext ctxt) {
         ctxt.user.openPrivateChannel()
                 .flatMap(c -> c.sendMessage(getAbout()))
-                .queue(suc -> ctxt.channel.sendMessage(getSuccess()).queue(),
+                .queue(suc -> ctxt.textChannel.sendMessage(getSuccess()).queue(),
                         err -> ErrorEmbeds.sendEmbed(ctxt, ErrorType.CLOSED_DMS));
     }
 
