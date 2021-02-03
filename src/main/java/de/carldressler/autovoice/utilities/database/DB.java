@@ -59,27 +59,6 @@ public class DB {
         }
     }
 
-    static public void executeInBatch(String... SQLs) {
-        Statement stmt = getStatement();
-        try {
-            for (String sql : SQLs) {
-                stmt.addBatch(sql);
-            }
-            stmt.executeBatch();
-            stmt.getConnection().commit();
-        } catch (SQLException err) {
-            try {
-                stmt.getConnection().rollback();
-            } catch (SQLException rollbackError) {
-                logger.error("Could not roll back failed batch query", rollbackError);
-            }
-            logger.error("Could not execute batch query", err);
-        } finally {
-            closeConnection(stmt);
-        }
-    }
-
-
     static public Statement getStatement() {
         try {
             return getConnection().createStatement();
@@ -96,35 +75,12 @@ public class DB {
         }
     }
 
-    public static void closeConnection(ResultSet rs) {
-        logger.debug("Closing ResultSet");
-        if (rs == null) {
-            return;
-        }
-        try {
-            rs.close();
-        } catch (SQLException err) {
-            throw new RuntimeException("Could not close ResultSet", err);
-        }
-    }
-
-    /**
-     * This method is reserved for result set connections that have been processed.
-     */
     static public void closeConnection(Statement statement) {
         logger.debug("Closing Statement (connection)");
         try {
-            closeConnection(statement.getConnection());
+            statement.getConnection().close();
         } catch (SQLException err) {
-            throw new RuntimeException("Could not close ResultSet", err);
-        }
-    }
-
-    static public void closeConnection(Connection connection) {
-        try {
-            connection.close();
-        } catch (SQLException err) {
-            throw new RuntimeException("Could not close ResultSet", err);
+            throw new RuntimeException("Could not close Statement or PreparedStatement", err);
         }
     }
 

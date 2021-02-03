@@ -31,7 +31,7 @@ public class InviteCommand extends Command {
                         "adding the bot to your own server is super easy. You need to have administrator permissions on the server.\n" +
                         "\n" +
                         "1) Open this link:\n" +
-                        "https://discord.com/api/oauth2/authorize?client_id=800327587241918484&permissions=8&scope=bot\n" +
+                        "https://discord.com/api/oauth2/authorize?client_id=800327587241918484&permissions=2147479505&scope=bot\n" +
                         "2) Select your server. You can only select servers on which you are an administrator.\n" +
                         "3) Click \"Authorize\" - do not remove any permissions.\n" +
                         "\n" +

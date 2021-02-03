@@ -81,7 +81,7 @@ public class AutoChannelManager {
                     autoChannelSet.add(autoChannel);
                 }
             } while (rs.next());
-            DB.closeConnection(rs);
+            DB.closeConnection(prepStmt);
         } catch (SQLException err) {
             logger.error("Could not get auto channels from DB using guild id.", err);
             return null;

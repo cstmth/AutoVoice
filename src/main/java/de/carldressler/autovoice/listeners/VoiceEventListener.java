@@ -19,21 +19,25 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 import java.util.Set;
 
+// TODO => Replace AutoChannelManager with AutoChannelMgr
 public class VoiceEventListener extends ListenerAdapter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
         Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
-        TempChannel tempChannel = TempChannelManager.getTempChannel(event.getChannelJoined());
+        TempChannel tempChannel = TempChannelManager.get(event.getChannelJoined());
 
         createTempChannelCheck(autoChannelSet, event.getChannelJoined(), event.getMember());
     }
 
     @Override
     public void onGuildVoiceMove(@NotNull GuildVoiceMoveEvent event) {
+        if (CooldownManager.isOnCooldown(event.getMember().getUser(), false))
+            return;
+
         Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
-        TempChannel tempChannel = TempChannelManager.getTempChannel(event.getChannelJoined());
+        TempChannel tempChannel = TempChannelManager.get(event.getChannelJoined());
 
         if (!createTempChannelCheck(autoChannelSet, event.getChannelJoined(), event.getMember()))
             deleteTempChannelCheck(autoChannelSet, event.getChannelLeft());
@@ -47,6 +51,7 @@ public class VoiceEventListener extends ListenerAdapter {
     }
 
     private boolean createTempChannelCheck(Set<AutoChannel> autoChannelSet, VoiceChannel channelJoined, Member member) {
+
         for (AutoChannel ac : autoChannelSet) {
             String id = ac.getId();
             if (channelJoined.getId().equals(id)) {

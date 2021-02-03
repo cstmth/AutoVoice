@@ -3,7 +3,7 @@ package de.carldressler.autovoice.commands.autochannel;
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
-import de.carldressler.autovoice.managers.AutoChannelManager;
+import de.carldressler.autovoice.managers.AutoChannelMgr;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.CooldownManager;
 import de.carldressler.autovoice.utilities.CustomEmotes;
@@ -28,7 +28,7 @@ public class SetupCommand extends Command {
         ctxt.guild.createCategory("AutoVoice")
                 .flatMap(cat -> cat.createVoiceChannel(channelName))
                 .queue(vc -> {
-                            if (AutoChannelManager.setupChannel(vc.getId(), guildId))
+                            if (AutoChannelMgr.setup(vc))
                                 ctxt.textChannel.sendMessage(getSuccess()).queue();
                             else
                                 ErrorEmbeds.sendEmbed(ctxt, ErrorType.UNKNOWN);

@@ -4,13 +4,8 @@ import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.autochannel.EmojiCommand;
 import de.carldressler.autovoice.commands.autochannel.SetupCommand;
-import de.carldressler.autovoice.commands.dev.CleanupCommand;
 import de.carldressler.autovoice.commands.dev.InfoCommand;
-import de.carldressler.autovoice.commands.misc.HelpCommand;
-import de.carldressler.autovoice.commands.misc.AboutCommand;
-import de.carldressler.autovoice.commands.misc.DmCommand;
-import de.carldressler.autovoice.commands.misc.InviteCommand;
-import de.carldressler.autovoice.commands.misc.SupportCommand;
+import de.carldressler.autovoice.commands.misc.*;
 import de.carldressler.autovoice.commands.tempchannel.LimitCommand;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
@@ -29,7 +24,6 @@ public class CommandHandler extends ListenerAdapter {
 
     static {
         commandMap.put("about", new AboutCommand());
-        commandMap.put("cleanup", new CleanupCommand());
         commandMap.put("dm", new DmCommand());
         commandMap.put("emoji", new EmojiCommand());
         commandMap.put("tempChannel", new InfoCommand());
