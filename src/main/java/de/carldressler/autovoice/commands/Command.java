@@ -11,7 +11,7 @@ public abstract class Command {
     private final String name;
     private final String syntax;
     private final String exampleUsage;
-    private final List<CommandFlag> flagsList  = new ArrayList<>();
+    private final List<CommandFlag> commandFlags = new ArrayList<>();
     private Map<String, Command> childCommandMap = new HashMap<>();
     private Command parentCommand;
 
@@ -20,7 +20,7 @@ public abstract class Command {
         this.name = name;
         this.syntax = syntax;
         this.exampleUsage = exampleUsage;
-        flagsList.addAll(Arrays.asList(flags));
+        commandFlags.addAll(Arrays.asList(flags));
     }
 
     public void addChildCommands(Map<String, Command> childCommandMap) {
@@ -28,11 +28,11 @@ public abstract class Command {
     }
 
     public void addFlags(CommandFlag... flags) {
-        flagsList.addAll(List.of(flags));
+        commandFlags.addAll(List.of(flags));
     }
 
     public boolean hasFlag(CommandFlag flag) {
-        return flagsList.contains(flag);
+        return commandFlags.contains(flag);
     }
 
     public void process(CommandContext ctxt) {
@@ -58,10 +58,10 @@ public abstract class Command {
         else if (hasFlag(CommandFlag.DISABLED))
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.DISABLED);
 
-        else if (hasFlag(CommandFlag.GUILD_ADMIN_REQUIRED) && !ctxt.member.hasPermission(Permission.ADMINISTRATOR))
+        else if (hasFlag(CommandFlag.PERM_GUILD_ADMIN) && !ctxt.member.hasPermission(Permission.ADMINISTRATOR))
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.NOT_GUILD_ADMIN);
 
-        else if (hasFlag(CommandFlag.GUILD_MODERATOR_REQUIRED) && !ctxt.member.hasPermission(Permission.MESSAGE_MANAGE))
+        else if (hasFlag(CommandFlag.PERM_GUILD_MOD) && !ctxt.member.hasPermission(Permission.MESSAGE_MANAGE))
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.NOT_GUILD_MODERATOR);
 
         else if (hasFlag(CommandFlag.GUILD_ONLY) && ctxt.guild == null)
@@ -98,8 +98,8 @@ public abstract class Command {
         return exampleUsage;
     }
 
-    public List<CommandFlag> getFlagsList() {
-        return flagsList;
+    public List<CommandFlag> getCommandFlags() {
+        return commandFlags;
     }
 
     public Command getParentCommand() {

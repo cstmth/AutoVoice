@@ -61,7 +61,7 @@ public class VoiceEventListener extends ListenerAdapter {
 
         if (autoChannel.getCategory().getId().equals(channelLeft.getParent().getId()) &&
                 channelLeft.getMembers().isEmpty())
-            channelLeft.delete().queue();
+                channelLeft.delete().queue(suc -> {}, err -> {});
     }
 }
 

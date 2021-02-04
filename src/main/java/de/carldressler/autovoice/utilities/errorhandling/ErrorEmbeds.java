@@ -20,6 +20,7 @@ public class ErrorEmbeds {
             case NO_AUTO_CHANNEL -> getNoAutoChannel();
             case CHANNEL_ADMIN_REQUIRED -> getChannelAdminRequired();
             case CLOSED_DMS -> getClosedDMs();
+            case INSUFFICIENT_PERMISSIONS -> getInsufficientPermissions();
             case INVALID_MENTION -> getInvalidMention();
             case NOT_IN_TEMP_CHANNEL -> getNotInTempChannel();
             case ON_COOLDOWN -> getOnCooldown();
@@ -142,6 +143,16 @@ public class ErrorEmbeds {
                         "\n" +
                         "For more information, please refer to `" + Constants.PREFIX + "help`.")
                 .build();
+    }
+
+    private static MessageEmbed getInsufficientPermissions() {
+        return new EmbedBuilder()
+            .setColor(Constants.ERROR_COLOR)
+            .setTitle(EmoteUtils.ERROR + "  Insufficient permissions")
+            .setDescription("The bot lacks permissions to execute the task. Please inform an administrator about this as only they can resolve it.\n" +
+                "\n" +
+                "For the admins: Please get an invite link using `" + Constants.PREFIX + "invite`, open it, choose any server and re-grant all permissions listed there in the server settings. You don't need to re-invite the bot. Thank you!")
+            .build();
     }
 
     private static MessageEmbed getInvalidMention() {

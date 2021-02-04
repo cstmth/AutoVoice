@@ -13,7 +13,7 @@ public class LimitCommand extends Command {
         super("limit",
             "limit (<max user amount>)",
             "limit 42",
-            CommandFlag.CHANNEL_ADMIN_REQUIRED,
+            CommandFlag.PERM_CHANNEL_ADMIN,
             CommandFlag.GUILD_ONLY,
             CommandFlag.TEMP_CHANNEL_REQUIRED);
     }

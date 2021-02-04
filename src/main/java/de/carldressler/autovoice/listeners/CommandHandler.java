@@ -5,6 +5,7 @@ import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.autochannel.EmojiCommand;
 import de.carldressler.autovoice.commands.autochannel.SetupCommand;
 import de.carldressler.autovoice.commands.misc.*;
+import de.carldressler.autovoice.commands.tempchannel.DeleteCommand;
 import de.carldressler.autovoice.commands.tempchannel.LimitCommand;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
@@ -23,6 +24,7 @@ public class CommandHandler extends ListenerAdapter {
 
     static {
         commandMap.put("about", new AboutCommand());
+        commandMap.put("delete", new DeleteCommand()); // TODO add to help (and general page)
         commandMap.put("dm", new DmCommand());
         commandMap.put("emoji", new EmojiCommand());
         commandMap.put("help", new HelpCommand());
@@ -30,7 +32,7 @@ public class CommandHandler extends ListenerAdapter {
         commandMap.put("limit", new LimitCommand());
         commandMap.put("setup", new SetupCommand());
         commandMap.put("support", new SupportCommand());
-        commandMap.put("uptime", new UptimeCommand()); // TODO add to help
+        commandMap.put("uptime", new UptimeCommand());
 
         aliasMap.put("create", "setup");
     }

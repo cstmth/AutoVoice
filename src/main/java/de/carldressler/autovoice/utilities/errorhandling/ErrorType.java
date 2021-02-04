@@ -19,6 +19,7 @@ public enum ErrorType {
 
 
     // Other
+    INSUFFICIENT_PERMISSIONS,
     INVALID_MENTION,
     CLOSED_DMS,
     ON_COOLDOWN,

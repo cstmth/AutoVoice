@@ -19,7 +19,7 @@ public class SetupCommand extends Command {
             "create my first auto channel",
             CommandFlag.GUILD_ONLY,
             CommandFlag.COOLDOWN_APPLIES,
-            CommandFlag.GUILD_ADMIN_REQUIRED);
+            CommandFlag.PERM_GUILD_ADMIN);
     }
 
     @Override

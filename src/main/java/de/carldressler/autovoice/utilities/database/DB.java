@@ -56,6 +56,8 @@ public class DB {
             return preparedStatement.executeQuery();
         } catch (SQLException err) {
             throw new RuntimeException("Could not query PreparedStatement", err);
+        } finally {
+            closeConnection(preparedStatement);
         }
     }
 

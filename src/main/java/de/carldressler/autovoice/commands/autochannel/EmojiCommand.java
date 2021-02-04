@@ -19,7 +19,7 @@ public class EmojiCommand extends Command {
             CommandFlag.TEMP_CHANNEL_REQUIRED,
             CommandFlag.AUTO_CHANNEL_REQUIRED,
             CommandFlag.COOLDOWN_APPLIES,
-            CommandFlag.GUILD_ADMIN_REQUIRED);
+            CommandFlag.PERM_GUILD_ADMIN);
     }
 
     @Override
