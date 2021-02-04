@@ -3,7 +3,7 @@ package de.carldressler.autovoice.commands.misc;
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.utilities.Constants;
-import de.carldressler.autovoice.utilities.CustomEmotes;
+import de.carldressler.autovoice.utilities.EmoteUtils;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public class AboutCommand extends Command {
     public AboutCommand() {
         super("about",
+            "about",
             null);
     }
 
@@ -26,7 +27,7 @@ public class AboutCommand extends Command {
     static MessageEmbed getAbout() {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT_COLOR)
-                .setTitle(CustomEmotes.INFO + "  Welcome to AutoVoice!")
+                .setTitle(EmoteUtils.INFO + "  Welcome to AutoVoice!")
                 .setDescription("""
                         > The AutoVoice project has been in existence since January 20, 2021. To be honest I am writing this on January 21, 2021 and there is not much to tell yet.
                         > \u200B
@@ -43,7 +44,7 @@ public class AboutCommand extends Command {
     static MessageEmbed getSuccess() {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT_COLOR)
-                .setDescription(CustomEmotes.SUCCESS + "  Mission complete: Check your inbox!")
+                .setDescription(EmoteUtils.SUCCESS + "  Mission complete: Check your inbox!")
                 .build();
     }
 }

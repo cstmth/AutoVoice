@@ -5,7 +5,7 @@ import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.CommandFlag;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.CooldownManager;
-import de.carldressler.autovoice.utilities.CustomEmotes;
+import de.carldressler.autovoice.utilities.EmoteUtils;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -13,7 +13,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class EmojiCommand extends Command {
     public EmojiCommand() {
-        super("emoji on|off",
+        super("emoji",
+            "emoji on|off",
             "emoji on",
             CommandFlag.TEMP_CHANNEL_REQUIRED,
             CommandFlag.AUTO_CHANNEL_REQUIRED,
@@ -46,7 +47,7 @@ public class EmojiCommand extends Command {
     private MessageEmbed getSuccess(String argument) {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT_COLOR)
-                .setTitle(CustomEmotes.SUCCESS + "  Random emoji were turned " + argument)
+                .setTitle(EmoteUtils.SUCCESS + "  Random emoji were turned " + argument)
                 .setDescription("Random emoji have been turned " + argument + " for new channels. This setting applies only to this AutoChannel and the temporary channels it creates, and does not modify channels retroactively.")
                 .build();
     }

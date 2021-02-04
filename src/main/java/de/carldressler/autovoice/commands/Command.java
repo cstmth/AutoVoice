@@ -8,13 +8,16 @@ import net.dv8tion.jda.api.Permission;
 import java.util.*;
 
 public abstract class Command {
-    private String syntax;
-    private String exampleUsage;
-    private List<CommandFlag> flagsList  = new ArrayList<>();
-    private Command parentCommand;
+    private final String name;
+    private final String syntax;
+    private final String exampleUsage;
+    private final List<CommandFlag> flagsList  = new ArrayList<>();
     private Map<String, Command> childCommandMap = new HashMap<>();
+    private Command parentCommand;
 
-    public Command(String syntax, String exampleUsage, CommandFlag... flags) {
+
+    public Command(String name, String syntax, String exampleUsage, CommandFlag... flags) {
+        this.name = name;
         this.syntax = syntax;
         this.exampleUsage = exampleUsage;
         flagsList.addAll(Arrays.asList(flags));
@@ -67,7 +70,7 @@ public abstract class Command {
         else if (hasFlag(CommandFlag.DM_ONLY) && ctxt.textChannel != null)
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.DM_ONLY);
 
-        if (hasFlag(CommandFlag.AUTO_CHANNEL_REQUIRED) && ctxt.autoChannel == null)
+        else if (hasFlag(CommandFlag.AUTO_CHANNEL_REQUIRED) && ctxt.autoChannel == null)
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.NO_AUTO_CHANNEL);
 
         else if (hasFlag(CommandFlag.TEMP_CHANNEL_REQUIRED) && ctxt.tempChannel == null)
@@ -82,6 +85,10 @@ public abstract class Command {
     }
 
     public abstract void run(CommandContext ctxt);
+
+    public String getName() {
+        return name;
+    }
 
     public String getSyntax() {
         return syntax;
@@ -102,5 +109,7 @@ public abstract class Command {
     public Map<String, Command> getChildCommandMap() {
         return childCommandMap;
     }
+
+
 }
 

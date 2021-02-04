@@ -1,7 +1,7 @@
 package de.carldressler.autovoice.entities.temp;
 
-import de.carldressler.autovoice.entities.AutoChannel;
-import de.carldressler.autovoice.managers.AutoChannelMgr;
+import de.carldressler.autovoice.entities.auto.AutoChannel;
+import de.carldressler.autovoice.entities.auto.AutoChannelManager;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -21,7 +21,7 @@ public class TempChannel {
         this.category = channel.getParent();
         this.guild = channel.getGuild();
         this.creator = guild.getMemberById(creatorId);
-        this.autoChannel = AutoChannelMgr.get(voiceChannel);
+        this.autoChannel = AutoChannelManager.get(voiceChannel);
     }
 
     public String getChannelId() {

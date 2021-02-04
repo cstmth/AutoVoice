@@ -1,11 +1,9 @@
 package de.carldressler.autovoice.listeners;
 
-import de.carldressler.autovoice.entities.*;
-import de.carldressler.autovoice.entities.temp.TempChannel;
-import de.carldressler.autovoice.managers.AutoChannelManager;
-import de.carldressler.autovoice.managers.TempChannelManager;
+import de.carldressler.autovoice.entities.auto.AutoChannel;
+import de.carldressler.autovoice.entities.auto.AutoChannelManager;
+import de.carldressler.autovoice.entities.temp.TempChannelManager;
 import de.carldressler.autovoice.utilities.CooldownManager;
-import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
@@ -16,19 +14,15 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Set;
-
 // TODO => Replace AutoChannelManager with AutoChannelMgr
 public class VoiceEventListener extends ListenerAdapter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
-        Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
-        TempChannel tempChannel = TempChannelManager.get(event.getChannelJoined());
+        AutoChannel autoChannel = AutoChannelManager.get(event.getChannelJoined());
 
-        createTempChannelCheck(autoChannelSet, event.getChannelJoined(), event.getMember());
+        createTempChannelCheck(autoChannel, event.getChannelJoined(), event.getMember());
     }
 
     @Override
@@ -36,36 +30,43 @@ public class VoiceEventListener extends ListenerAdapter {
         if (CooldownManager.isOnCooldown(event.getMember().getUser(), false))
             return;
 
-        Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
-        TempChannel tempChannel = TempChannelManager.get(event.getChannelJoined());
+        AutoChannel autoChannel = AutoChannelManager.get(event.getChannelJoined());
 
-        if (!createTempChannelCheck(autoChannelSet, event.getChannelJoined(), event.getMember()))
-            deleteTempChannelCheck(autoChannelSet, event.getChannelLeft());
+        createTempChannelCheck(autoChannel, event.getChannelJoined(), event.getMember());
+        deleteTempChannelCheck(autoChannel, event.getChannelLeft());
     }
 
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
-        Set<AutoChannel> autoChannelSet = AutoChannelManager.getAutoChannelSet(event.getGuild());
+        AutoChannel autoChannel = AutoChannelManager.get(event.getChannelLeft());
 
-        deleteTempChannelCheck(autoChannelSet, event.getChannelLeft());
+        deleteTempChannelCheck(autoChannel, event.getChannelLeft());
     }
 
-    private boolean createTempChannelCheck(Set<AutoChannel> autoChannelSet, VoiceChannel channelJoined, Member member) {
+    private boolean createTempChannelCheck(AutoChannel autoChannel, VoiceChannel channelJoined, Member member) {
+        if (autoChannel == null || channelJoined.getParent() == null)
+            return false;
 
-        for (AutoChannel ac : autoChannelSet) {
-            String id = ac.getId();
-            if (channelJoined.getId().equals(id)) {
-                TempChannelManager.setupChannel(ac, member);
+            if (autoChannel.getChannel().getId().equals(channelJoined.getId())) {
+                TempChannelManager.setupChannel(autoChannel, member);
                 CooldownManager.cooldownUser(member.getUser());
                 return true;
             }
-        }
         return false;
     }
 
-    // TODO => Rewrite to use temp channel record over AutoChannel set (requires AutoChannel reference on TempChannel)
-    private void deleteTempChannelCheck(Set<AutoChannel> autoChannelSet, VoiceChannel channelLeft) {
-        Set<String> autoChannelCategoryIds = new HashSet<>();
+    private void deleteTempChannelCheck(AutoChannel autoChannel, VoiceChannel channelLeft) {
+        if (autoChannel == null || channelLeft.getParent() == null)
+            return;
+
+        if (autoChannel.getCategory().getId().equals(channelLeft.getParent().getId()) &&
+                channelLeft.getMembers().isEmpty())
+            channelLeft.delete().queue();
+    }
+}
+
+/*
+Set<String> autoChannelCategoryIds = new HashSet<>();
         Set<String> autoChannelIds = new HashSet<>();
 
         if (autoChannelSet == null || channelLeft.getParent() == null) {
@@ -87,5 +88,4 @@ public class VoiceEventListener extends ListenerAdapter {
             channelLeft.getMembers().isEmpty()) {
             TempChannelManager.teardownChannel(channelLeft);
         }
-    }
-}
+ */

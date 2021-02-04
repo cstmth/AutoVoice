@@ -1,9 +1,9 @@
 package de.carldressler.autovoice.commands;
 
-import de.carldressler.autovoice.entities.AutoChannel;
+import de.carldressler.autovoice.entities.auto.AutoChannel;
 import de.carldressler.autovoice.entities.temp.TempChannel;
-import de.carldressler.autovoice.managers.AutoChannelMgr;
-import de.carldressler.autovoice.managers.TempChannelManager;
+import de.carldressler.autovoice.entities.auto.AutoChannelManager;
+import de.carldressler.autovoice.entities.temp.TempChannelManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -42,7 +42,7 @@ public class CommandContext {
         } else {
             this.voiceChannel = event.getMember().getVoiceState().getChannel();
 
-            AutoChannel autoChannel = AutoChannelMgr.get(voiceChannel);
+            AutoChannel autoChannel = AutoChannelManager.get(voiceChannel);
             TempChannel tempChannel = TempChannelManager.get(voiceChannel);
 
             if (autoChannel != null) {

@@ -3,7 +3,7 @@ package de.carldressler.autovoice.commands.misc;
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.utilities.Constants;
-import de.carldressler.autovoice.utilities.CustomEmotes;
+import de.carldressler.autovoice.utilities.EmoteUtils;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public class InviteCommand extends Command {
     public InviteCommand() {
         super("invite",
+            "invite",
             null);
     }
 
@@ -26,7 +27,7 @@ public class InviteCommand extends Command {
     static MessageEmbed getInvite(CommandContext ctxt) {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT_COLOR)
-                .setTitle(CustomEmotes.INVITE + "  Invite AutoVoice to your server")
+                .setTitle(EmoteUtils.INVITE + "  Invite AutoVoice to your server")
                 .setDescription("Hey " + ctxt.user.getName() + ",\n" +
                         "adding the bot to your own server is super easy. You need to have administrator permissions on the server.\n" +
                         "\n" +
@@ -45,7 +46,7 @@ public class InviteCommand extends Command {
     static MessageEmbed getSuccess() {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT_COLOR)
-                .setDescription(CustomEmotes.SUCCESS + "  An invitation was dropped into your direct messages.")
+                .setDescription(EmoteUtils.SUCCESS + "  An invitation was dropped into your direct messages.")
                 .build();
     }
 }

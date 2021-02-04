@@ -1,10 +1,9 @@
-package de.carldressler.autovoice.managers;
+package de.carldressler.autovoice.entities.temp;
 
 import de.carldressler.autovoice.Bot;
+import de.carldressler.autovoice.entities.auto.AutoChannel;
+import de.carldressler.autovoice.utilities.EmoteUtils;
 import de.carldressler.autovoice.utilities.database.DB;
-import de.carldressler.autovoice.entities.AutoChannel;
-import de.carldressler.autovoice.entities.temp.TempChannel;
-import de.carldressler.autovoice.utilities.CustomEmotes;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -26,7 +25,7 @@ public class TempChannelManager {
      */
     public static void setupChannel(AutoChannel autoChannel, Member member) {
         Category category = autoChannel.getChannel().getParent();
-        String emoji = autoChannel.isRandomEmoji() ? CustomEmotes.getRandomEmoji() : "\uD83D\uDCAC";
+        String emoji = autoChannel.isRandomEmoji() ? EmoteUtils.getRandomEmoji() : "\uD83D\uDCAC";
 
         autoChannel.getGuild().createVoiceChannel(emoji + " " + member.getEffectiveName(), category).queue(vc -> {
                 registerChannel(vc, member);

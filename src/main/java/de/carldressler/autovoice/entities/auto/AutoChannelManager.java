@@ -1,6 +1,5 @@
-package de.carldressler.autovoice.managers;
+package de.carldressler.autovoice.entities.auto;
 
-import de.carldressler.autovoice.entities.AutoChannel;
 import de.carldressler.autovoice.utilities.database.DB;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -15,7 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class AutoChannelMgr {
+public class AutoChannelManager {
     static private final Logger logger = LoggerFactory.getLogger("AutoChannelMgr");
     static private final Map<String, HashSet<AutoChannel>> cache = ExpiringMap.builder()
         .maxSize(10_000)
@@ -76,6 +75,7 @@ public class AutoChannelMgr {
                     autoChannelSet.add(new AutoChannel(voiceChannel, usesRandomEmoji));
 
             } while (rs.next());
+            DB.closeConnection(prepStmt);
             return autoChannelSet;
         } catch (SQLException err) {
             logger.error("An error occurred while fetching an Auto Channel record from the database", err);
