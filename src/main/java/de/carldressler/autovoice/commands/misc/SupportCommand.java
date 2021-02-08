@@ -3,7 +3,7 @@ package de.carldressler.autovoice.commands.misc;
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.utilities.Constants;
-import de.carldressler.autovoice.utilities.CustomEmotes;
+import de.carldressler.autovoice.utilities.EmoteUtils;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorType;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public class SupportCommand extends Command {
     public SupportCommand() {
         super("support",
+            "support",
             null);
     }
 
@@ -26,7 +27,7 @@ public class SupportCommand extends Command {
     static MessageEmbed getInvite(CommandContext ctxt) {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT_COLOR)
-                .setTitle(CustomEmotes.INFO + "  Join the AutoVoice community!")
+                .setTitle(EmoteUtils.INFO + "  Join the AutoVoice community!")
                 .setDescription("Hey " + ctxt.user.getName() + ",\n" +
                         "The official AutoVoice Discord server is the best place for help, news and helpful tips and tricks around AutoVoice.\n" +
                         "\n" +
@@ -40,7 +41,7 @@ public class SupportCommand extends Command {
     static MessageEmbed getSuccess() {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT_COLOR)
-                .setDescription(CustomEmotes.SUCCESS + "  The invitation link to the official AutoVoice Community Discord was sent to your DMs!")
+                .setDescription(EmoteUtils.SUCCESS + "  The invitation link to the official AutoVoice Community Discord was sent to your DMs!")
                 .build();
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class CustomEmotes {
+public class EmoteUtils {
     public static final String LOGO = Objects.requireNonNull(Bot.jda.getEmoteById("803594608746561546")).getAsMention();
     public static final String SUCCESS = Objects.requireNonNull(Bot.jda.getEmoteById("803594608902799360")).getAsMention();
     public static final String ERROR = Objects.requireNonNull(Bot.jda.getEmoteById("803594609204789298")).getAsMention();

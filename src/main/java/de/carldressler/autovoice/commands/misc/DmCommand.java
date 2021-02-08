@@ -3,13 +3,14 @@ package de.carldressler.autovoice.commands.misc;
 import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.utilities.Constants;
-import de.carldressler.autovoice.utilities.CustomEmotes;
+import de.carldressler.autovoice.utilities.EmoteUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class DmCommand extends Command {
     public DmCommand() {
         super("dm",
+            "dm",
             null);
     }
 
@@ -21,7 +22,7 @@ public class DmCommand extends Command {
     static MessageEmbed getActivateDms(CommandContext ctxt) {
         return new EmbedBuilder()
                 .setColor(Constants.ACCENT_COLOR)
-                .setTitle(CustomEmotes.INFO + "  How to allow direct messages from the bot")
+                .setTitle(EmoteUtils.INFO + "  How to allow direct messages from the bot")
                 .setDescription("Hey " + ctxt.user.getName() + ",\n" +
                     "If you allow direct messaging from server members, you don't need to do anything else. The bot can send you messages just like other server members.\n" +
                     "\n" +

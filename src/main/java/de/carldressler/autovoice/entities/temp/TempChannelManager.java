@@ -1,10 +1,9 @@
-package de.carldressler.autovoice.managers;
+package de.carldressler.autovoice.entities.temp;
 
 import de.carldressler.autovoice.Bot;
+import de.carldressler.autovoice.entities.auto.AutoChannel;
+import de.carldressler.autovoice.utilities.EmoteUtils;
 import de.carldressler.autovoice.utilities.database.DB;
-import de.carldressler.autovoice.entities.AutoChannel;
-import de.carldressler.autovoice.entities.temp.TempChannel;
-import de.carldressler.autovoice.utilities.CustomEmotes;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -26,7 +25,7 @@ public class TempChannelManager {
      */
     public static void setupChannel(AutoChannel autoChannel, Member member) {
         Category category = autoChannel.getChannel().getParent();
-        String emoji = autoChannel.isRandomEmoji() ? CustomEmotes.getRandomEmoji() : "\uD83D\uDCAC";
+        String emoji = autoChannel.isRandomEmoji() ? EmoteUtils.getRandomEmoji() : "\uD83D\uDCAC";
 
         autoChannel.getGuild().createVoiceChannel(emoji + " " + member.getEffectiveName(), category).queue(vc -> {
                 registerChannel(vc, member);
@@ -40,7 +39,7 @@ public class TempChannelManager {
             String sql = """
                 INSERT
                 INTO temp_channels
-                VALUES (?, ?, ?, 0)
+                VALUES (?, ?, ?)
                 """;
             PreparedStatement prepStmt = DB.getPreparedStatement(sql);
             prepStmt.setString(1, newChannel.getId());
@@ -53,7 +52,7 @@ public class TempChannelManager {
     }
 
     // READ
-    public static TempChannel getTempChannel(VoiceChannel voiceChannel) {
+    public static TempChannel get(VoiceChannel voiceChannel) {
         return getTempChannelUsingDatabase(voiceChannel.getId());
     }
 
@@ -65,7 +64,7 @@ public class TempChannelManager {
                 """;
         PreparedStatement prepStmt = DB.getPreparedStatement(sql);
         ResultSet rs = null;
-
+        TempChannel tempChannel;
         try {
             prepStmt.setString(1, channelId);
             rs = DB.queryPreparedStatement(prepStmt);
@@ -76,20 +75,20 @@ public class TempChannelManager {
 
             String tempChannelId = rs.getString("channel_id");
             String creatorId = rs.getString("creator_id");
-            int lockStateInt = rs.getInt("lock_state");
             VoiceChannel channel = Bot.jda.getVoiceChannelById(tempChannelId);
 
             if (channel == null) {
                 unregisterChannel(channelId);
                 return null;
             }
-            return new TempChannel(channel, creatorId, lockStateInt);
+            tempChannel = new TempChannel(channel, creatorId);
         } catch (SQLException err) {
             err.printStackTrace();
             return null;
         } finally {
-            DB.closeConnection(rs);
+            DB.closeConnection(prepStmt);
         }
+        return tempChannel;
     }
 
     public static void teardownChannel(VoiceChannel emptyChannel) {

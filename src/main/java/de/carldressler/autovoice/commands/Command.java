@@ -8,16 +8,19 @@ import net.dv8tion.jda.api.Permission;
 import java.util.*;
 
 public abstract class Command {
-    private String syntax;
-    private String exampleUsage;
-    private List<CommandFlag> flagsList  = new ArrayList<>();
-    private Command parentCommand;
+    private final String name;
+    private final String syntax;
+    private final String exampleUsage;
+    private final List<CommandFlag> commandFlags = new ArrayList<>();
     private Map<String, Command> childCommandMap = new HashMap<>();
+    private Command parentCommand;
 
-    public Command(String syntax, String exampleUsage, CommandFlag... flags) {
+
+    public Command(String name, String syntax, String exampleUsage, CommandFlag... flags) {
+        this.name = name;
         this.syntax = syntax;
         this.exampleUsage = exampleUsage;
-        flagsList.addAll(Arrays.asList(flags));
+        commandFlags.addAll(Arrays.asList(flags));
     }
 
     public void addChildCommands(Map<String, Command> childCommandMap) {
@@ -25,11 +28,11 @@ public abstract class Command {
     }
 
     public void addFlags(CommandFlag... flags) {
-        flagsList.addAll(List.of(flags));
+        commandFlags.addAll(List.of(flags));
     }
 
     public boolean hasFlag(CommandFlag flag) {
-        return flagsList.contains(flag);
+        return commandFlags.contains(flag);
     }
 
     public void process(CommandContext ctxt) {
@@ -55,10 +58,10 @@ public abstract class Command {
         else if (hasFlag(CommandFlag.DISABLED))
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.DISABLED);
 
-        else if (hasFlag(CommandFlag.GUILD_ADMIN_REQUIRED) && !ctxt.member.hasPermission(Permission.ADMINISTRATOR))
+        else if (hasFlag(CommandFlag.PERM_GUILD_ADMIN) && !ctxt.member.hasPermission(Permission.ADMINISTRATOR))
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.NOT_GUILD_ADMIN);
 
-        else if (hasFlag(CommandFlag.GUILD_MODERATOR_REQUIRED) && !ctxt.member.hasPermission(Permission.MESSAGE_MANAGE))
+        else if (hasFlag(CommandFlag.PERM_GUILD_MOD) && !ctxt.member.hasPermission(Permission.MESSAGE_MANAGE))
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.NOT_GUILD_MODERATOR);
 
         else if (hasFlag(CommandFlag.GUILD_ONLY) && ctxt.guild == null)
@@ -67,7 +70,7 @@ public abstract class Command {
         else if (hasFlag(CommandFlag.DM_ONLY) && ctxt.textChannel != null)
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.DM_ONLY);
 
-        if (hasFlag(CommandFlag.AUTO_CHANNEL_REQUIRED) && ctxt.autoChannel == null)
+        else if (hasFlag(CommandFlag.AUTO_CHANNEL_REQUIRED) && ctxt.autoChannel == null)
           ErrorEmbeds.sendEmbed(ctxt, ErrorType.NO_AUTO_CHANNEL);
 
         else if (hasFlag(CommandFlag.TEMP_CHANNEL_REQUIRED) && ctxt.tempChannel == null)
@@ -83,6 +86,10 @@ public abstract class Command {
 
     public abstract void run(CommandContext ctxt);
 
+    public String getName() {
+        return name;
+    }
+
     public String getSyntax() {
         return syntax;
     }
@@ -91,8 +98,8 @@ public abstract class Command {
         return exampleUsage;
     }
 
-    public List<CommandFlag> getFlagsList() {
-        return flagsList;
+    public List<CommandFlag> getCommandFlags() {
+        return commandFlags;
     }
 
     public Command getParentCommand() {
@@ -102,5 +109,7 @@ public abstract class Command {
     public Map<String, Command> getChildCommandMap() {
         return childCommandMap;
     }
+
+
 }
 

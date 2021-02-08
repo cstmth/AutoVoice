@@ -4,13 +4,8 @@ import de.carldressler.autovoice.commands.Command;
 import de.carldressler.autovoice.commands.CommandContext;
 import de.carldressler.autovoice.commands.autochannel.EmojiCommand;
 import de.carldressler.autovoice.commands.autochannel.SetupCommand;
-import de.carldressler.autovoice.commands.dev.CleanupCommand;
-import de.carldressler.autovoice.commands.dev.InfoCommand;
-import de.carldressler.autovoice.commands.misc.HelpCommand;
-import de.carldressler.autovoice.commands.misc.AboutCommand;
-import de.carldressler.autovoice.commands.misc.DmCommand;
-import de.carldressler.autovoice.commands.misc.InviteCommand;
-import de.carldressler.autovoice.commands.misc.SupportCommand;
+import de.carldressler.autovoice.commands.misc.*;
+import de.carldressler.autovoice.commands.tempchannel.DeleteCommand;
 import de.carldressler.autovoice.commands.tempchannel.LimitCommand;
 import de.carldressler.autovoice.utilities.Constants;
 import de.carldressler.autovoice.utilities.errorhandling.ErrorEmbeds;
@@ -29,21 +24,16 @@ public class CommandHandler extends ListenerAdapter {
 
     static {
         commandMap.put("about", new AboutCommand());
-        commandMap.put("cleanup", new CleanupCommand());
+        commandMap.put("delete", new DeleteCommand()); // TODO add to help (and general page)
         commandMap.put("dm", new DmCommand());
         commandMap.put("emoji", new EmojiCommand());
-        commandMap.put("tempChannel", new InfoCommand());
         commandMap.put("help", new HelpCommand());
-        commandMap.put("info", new InfoCommand());
         commandMap.put("invite", new InviteCommand());
         commandMap.put("limit", new LimitCommand());
-        // commandMap.put("lock", new LockCommand());
         commandMap.put("setup", new SetupCommand());
         commandMap.put("support", new SupportCommand());
+        commandMap.put("uptime", new UptimeCommand());
 
-        aliasMap.put("gtc", "tempChannel");
-        aliasMap.put("unlock", "lock");
-        aliasMap.put("superlock", "lock");
         aliasMap.put("create", "setup");
     }
 
@@ -60,7 +50,7 @@ public class CommandHandler extends ListenerAdapter {
         
         if (commandMap.containsKey(ctxt.invocator.toLowerCase()) || aliasMap.containsKey(ctxt.invocator.toLowerCase()))
             callCommand(ctxt);
-        else
+        else if (messageContent.length() != 1)
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.INVALID_COMMAND);
     }
 

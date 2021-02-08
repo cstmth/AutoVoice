@@ -1,4 +1,4 @@
-package de.carldressler.autovoice.entities;
+package de.carldressler.autovoice.entities.auto;
 
 import de.carldressler.autovoice.utilities.database.DB;
 import net.dv8tion.jda.api.entities.Category;
