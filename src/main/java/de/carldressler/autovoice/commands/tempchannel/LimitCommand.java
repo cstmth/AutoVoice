@@ -22,13 +22,21 @@ public class LimitCommand extends Command {
     public void run(CommandContext ctxt) {
         int userLimit;
 
-        if (ctxt.args.isEmpty())
+        if (ctxt.args.isEmpty()) {
+
             userLimit = ctxt.voiceChannel.getMembers().size();
-        else if (ctxt.args.get(0).matches("^(0?[1-9]|[1-9][0-9])$"))
+            if (ctxt.voiceChannel.getUserLimit() != 0)
+                userLimit = 0;
+
+        } else if (ctxt.args.get(0).matches("^(0?[0-9]|[1-9][0-9])$")) {
+
             userLimit = Integer.parseInt(ctxt.args.get(0));
-        else {
+
+        } else {
+
             ctxt.textChannel.sendMessage(getInvalidNumber()).queue();
             return;
+
         }
 
         if (userLimit > 99)
