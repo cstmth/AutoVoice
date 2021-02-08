@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO => Replace AutoChannelManager with AutoChannelMgr
 public class VoiceEventListener extends ListenerAdapter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -27,9 +26,6 @@ public class VoiceEventListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceMove(@NotNull GuildVoiceMoveEvent event) {
-        if (CooldownManager.isOnCooldown(event.getMember().getUser(), false))
-            return;
-
         AutoChannel autoChannel = AutoChannelManager.get(event.getChannelJoined());
 
         createTempChannelCheck(autoChannel, event.getChannelJoined(), event.getMember());
@@ -44,6 +40,9 @@ public class VoiceEventListener extends ListenerAdapter {
     }
 
     private boolean createTempChannelCheck(AutoChannel autoChannel, VoiceChannel channelJoined, Member member) {
+        if (CooldownManager.isOnCooldown(member.getUser(), false))
+            return false;
+
         if (autoChannel == null || channelJoined.getParent() == null)
             return false;
 
@@ -60,6 +59,7 @@ public class VoiceEventListener extends ListenerAdapter {
             return;
 
         if (autoChannel.getCategory().getId().equals(channelLeft.getParent().getId()) &&
+                !autoChannel.getChannel().getId().equals(channelLeft.getId()) &&
                 channelLeft.getMembers().isEmpty())
                 channelLeft.delete().queue(suc -> {}, err -> {});
     }

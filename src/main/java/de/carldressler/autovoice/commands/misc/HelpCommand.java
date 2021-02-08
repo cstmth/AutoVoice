@@ -28,6 +28,7 @@ public class HelpCommand extends Command {
         String searchString = String.join(" ", ctxt.args);
         MessageEmbed embed = switch (searchString) {
             case "about" -> aboutEmbed();
+            case "delete" -> deleteEmbed();
             case "emoji" -> emojiEmbed();
             case "help" -> helpEmbed();
             case "invite" -> inviteEmbed();
@@ -61,6 +62,7 @@ public class HelpCommand extends Command {
                 `CM`  \u2192  Channel Moderator required""")
             .addField("command", """
                 `about`
+                `delete`
                 `emoji`
                 `help`
                 `invite`
@@ -75,10 +77,11 @@ public class HelpCommand extends Command {
                 """, true)
             .addField("summary", """
                 meta information _about_ the bot
-                changes the default temporary channel emoji
+                deletes the current temp channel
+                changes the default temp channel emoji
                 this is literally inception
                 sends you a bot invite for your own server
-                limits max user amount in temporary channel
+                limits max user amount for temp channel
                 creates new Auto Channel
                 returns the current bot uptime
                                 
@@ -89,7 +92,8 @@ public class HelpCommand extends Command {
                 """, true)
             .addField("permissions", """
                 DM
-                SA
+                CA
+                CA
                 none
                 DM
                 CM/CA
@@ -109,6 +113,17 @@ public class HelpCommand extends Command {
             .addField("Syntax", "`" + Constants.PREFIX + "about`", true)
             .addField("Aliases", "none", true)
             .addField("Restrictions", dmsRequiredRestriction, true)
+            .build();
+    }
+
+    private MessageEmbed deleteEmbed() {
+        return new EmbedBuilder()
+            .setColor(Constants.ACCENT_COLOR)
+            .setTitle(EmoteUtils.INFO + "  Delete the current temp channel with `" + Constants.PREFIX + "delete`")
+            .setDescription("Deletes the temporary channel you are in at the time of invocation. All members in the room are kicked.")
+            .addField("Syntax", "`" + Constants.PREFIX + "delete", true)
+            .addField("Aliases", "none", true)
+            .addField("Restrictions", channelAdminRestriction, true)
             .build();
     }
 

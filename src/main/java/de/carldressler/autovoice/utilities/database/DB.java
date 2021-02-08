@@ -96,6 +96,4 @@ public class DB {
             throw new RuntimeException("Could not get valid database connection", err);
         }
     }
-
-
 }

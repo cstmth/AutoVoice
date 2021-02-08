@@ -30,7 +30,7 @@ public class Bot {
         String token = getToken();
         jda = JDABuilder
             .createDefault(token)
-            .setActivity(Activity.watching(Constants.PREFIX + "help \uD83C\uDF89 v 1.1"))
+            .setActivity(Activity.watching(Constants.PREFIX + "help \uD83C\uDF89 v 1.1.2"))
             .addEventListeners(new CommandHandler(),
                 new VoiceEventListener(),
                 new ChannelEventListener())

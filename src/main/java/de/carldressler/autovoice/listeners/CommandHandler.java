@@ -50,7 +50,7 @@ public class CommandHandler extends ListenerAdapter {
         
         if (commandMap.containsKey(ctxt.invocator.toLowerCase()) || aliasMap.containsKey(ctxt.invocator.toLowerCase()))
             callCommand(ctxt);
-        else
+        else if (messageContent.length() != 1)
             ErrorEmbeds.sendEmbed(ctxt, ErrorType.INVALID_COMMAND);
     }
 

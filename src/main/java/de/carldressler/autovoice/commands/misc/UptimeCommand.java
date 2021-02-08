@@ -25,8 +25,8 @@ public class UptimeCommand extends Command {
         Duration difference = Duration.between(startDate, LocalDateTime.now());
         long days = difference.toDays();
         long hours = difference.toHours() - (days * 24);
-        long minutes = difference.toMinutes() - days * 24 - hours * 60;
-        long seconds = difference.toSeconds() - days * 24 - hours * 60 - minutes * 60;
+        long minutes = difference.toMinutes() - days * 1440 - hours * 60;
+        long seconds = difference.toSeconds() - days * 86400 - hours * 3600 - minutes * 60;
         MessageEmbed embed = getUptime(days, hours, minutes, seconds);
 
         ctxt.textChannel.sendMessage(embed).queue();
@@ -35,9 +35,7 @@ public class UptimeCommand extends Command {
     private MessageEmbed getUptime(long days, long hours, long minutes, long seconds) {
         return new EmbedBuilder()
             .setColor(Constants.ACCENT_COLOR)
-            .setDescription("The bot has been running for " + days + " days, " + hours + " hours, " + minutes + " minutes and " + seconds + " seconds.\n" +
-                "\n" +
-                "On January 20, 2021, AutoVoice went online for the very first time.")
+            .setDescription("The bot has been running for " + days + " days, " + hours + " hours, " + minutes + " minutes and " + seconds + " seconds.")
             .build();
     }
 }
